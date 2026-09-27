@@ -24,8 +24,16 @@
 | [0013](lessons/0013-comparison.html) | 横向比较 | — | 各家在"Core vs Harness"边界上的分歧 |
 | [0014](lessons/0014-mental-model.html) | 五层 Mental Model | [13](lessons/diagrams/13-mental-model.html) | Agent = LLM + Loop + Harness + Environment 成立吗？ |
 
-最终练习：[从 0 手写 Minimal Pi-like Agent Harness](reference/minimal-harness.html)。
+最终练习：[从 0 手写 Minimal Pi-like Agent Harness](reference/minimal-harness.html)，配套可运行工作区 [practice/](practice/README.md)（接口 + 17 个验收测试已就位，实现留给你）。
 随查随用：[术语表](reference/glossary.html) · [关键源码地图](reference/source-map.html)。
+
+## 后续编排（如何用完这套课程）
+
+1. **逐课推进**：读完一课 → 做课末检索测验（先凭记忆）→ 通过导师追问后进入下一课。
+2. **写学习记录**：每当"证明了一个理解 / 纠正了一个误解 / 声明了已有知识"，在
+   [learning-records/](learning-records/README.md) 增加一条 `NNNN-slug.md`——这是跨会话计算你最近发展区的依据。
+3. **毕业练习**：读完第 14 课后进入 `practice/`，按 README 的 6 步实现顺序把 17 个测试逐个变绿。
+4. **完成标志**：设计卷末尾的七条自查全部回答"是"，并能对照 Diagram 01 向他人讲清整个 Harness。
 
 ## 学习方式
 

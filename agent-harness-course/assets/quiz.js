@@ -1,9 +1,9 @@
 /* 课程共用测验组件：在页面内放 <div class="quiz" data-quiz='...JSON...'></div>
    JSON: { "title": "...", "items": [ { "q": "...", "options": ["A","B","C"], "answer": 1, "why": "..." } ] }
-   选项渲染时打乱显示顺序，但按内容判定；反馈只显示对错与解释。 */
+   answer 永远指向 options 的原始下标；渲染时打乱显示顺序，按内容判定；反馈只显示对错与解释。 */
 (function () {
   function shuffle(arr) {
-    const a = arr.map((v, i) => [v, i]);
+    const a = arr.map((value, index) => ({ v: value, i: index }));
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
@@ -19,8 +19,7 @@
       const opts = shuffle(item.options);
       html += '<fieldset data-qi="' + qi + '"><legend>' + (qi + 1) + ". " + item.q + "</legend>";
       opts.forEach((opt) => {
-        const idx = opt.i;
-        html += '<label><input type="radio" name="q' + qi + '" value="' + idx + '"> ' + opt.v + "</label>";
+        html += '<label><input type="radio" name="q' + qi + '" value="' + opt.i + '"> ' + opt.v + "</label>";
       });
       html += "</fieldset>";
     });

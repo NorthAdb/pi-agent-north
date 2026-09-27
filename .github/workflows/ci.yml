@@ -12,6 +12,10 @@ concurrency:
 
 jobs:
   build-check-test:
+    # 上游 CI 只在上游仓库运行：fork 上的 packages/ai 测试与模型目录
+    # 长期不同步（pre-existing），且本 fork 的课程改动无需触发 pi 全量构建。
+    # fork 的内容质检由 course-qa.yml 承担。
+    if: github.repository == 'earendil-works/pi'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

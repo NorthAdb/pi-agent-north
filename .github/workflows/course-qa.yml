@@ -1,0 +1,21 @@
+name: course-qa
+
+# 课程内容质检门：测验 JSON 合法性、链接完整性、导航一致性、
+# 课图交叉引用、选项长度平衡。与 Pi 上游代码无关，只守护 agent-harness-course/。
+on:
+  push:
+    paths: ["agent-harness-course/**", ".github/workflows/course-qa.yml"]
+  pull_request:
+    paths: ["agent-harness-course/**", ".github/workflows/course-qa.yml"]
+  workflow_dispatch:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run course QA gate
+        run: python agent-harness-course/qa.py

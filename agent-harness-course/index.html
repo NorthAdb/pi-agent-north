@@ -34,6 +34,12 @@ a.card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.0
 .pill:hover { border-color: var(--accent); color: var(--accent); }
 footer { margin-top:3.4rem; padding-top:1rem; border-top:1px solid var(--line);
   font-size:.84rem; color:var(--soft); }
+@media (prefers-color-scheme: dark) {
+  :root { --ink:#e8e4da; --soft:#b3aea2; --accent:#5cc8b4; --accent-soft:#1d332e;
+    --line:#3a362e; --paper:#1c1b18; }
+  a.card { background:#232019; }
+  .pill { background:#232019; }
+}
 </style>
 </head>
 <body>
@@ -120,6 +126,7 @@ footer { margin-top:3.4rem; padding-top:1rem; border-top:1px solid var(--line);
       <a class="pill" href="reference/glossary.html">📖 术语表</a>
       <a class="pill" href="reference/source-map.html">🗺 关键源码地图</a>
       <a class="pill" href="reference/minimal-harness.html">🎯 毕业设计卷</a>
+      <a class="pill" href="reference/cheatsheet.html">🖨 一页纸速查表</a>
       <a class="pill" href="practice/README.md">🛠 毕业练习工作区（17 测试）</a>
       <a class="pill" href="learning-records/README.md">📓 学习记录</a>
       <a class="pill" href="../learn-pi/README.md">入库概览导读 learn-pi</a>

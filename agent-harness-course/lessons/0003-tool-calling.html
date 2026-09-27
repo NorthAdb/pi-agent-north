@@ -58,11 +58,7 @@ context.messages.append(toolResultMessage(result))             # 回填给模型
   <h2>五、这张图在整个体系中的位置</h2>
   <p>工具是模型与真实世界之间唯一的桥。第 4 课看这些桥的产出如何挤占上下文预算（引出 Compaction），第 9 课看桥的另一端如何被安全边界约束。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"pi-ai 里的 Tool 接口（name/description/parameters）包含 execute 函数吗？","options":["包含","不包含，execute 是 agent 包扩展的","旧版包含新版没有"],"answer":1,"why":"Tool 是纯声明（进模型的菜单）；AgentTool extends Tool 加上 execute——调用点与实现体分离。"},
-    {"q":"toolResult 消息里的 isError=true 意味着？","options":["会话必须终止","这次调用失败，但信息仍给模型","模型需要重新声明工具"],"answer":1,"why":"错误文本进入下一轮请求，模型据此自纠——这就是循环的容错机制。"},
-    {"q":"工具输出超过 2000 行 / 50KB 时 Pi 会？","options":["直接报错","静默丢弃","截断并附上继续读取的提示"],"answer":2,"why":"truncate.ts 统一截断，read 保开头并提示 offset 续读，bash 保结尾并落盘完整输出。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "pi-ai 里的 Tool 接口（name/description/parameters）包含 execute 函数吗？", "options": ["包含 execute 字段", "不包含，execute 在 agent 包", "旧版包含，新版移除"], "answer": 1, "why": "Tool 是纯声明（进模型的菜单）；AgentTool extends Tool 加上 execute——调用点与实现体分离。"}, {"q": "toolResult 消息里的 isError=true 意味着？", "options": ["会话必须终止", "这次调用失败，但信息仍给模型", "模型需要重新声明工具"], "answer": 1, "why": "错误文本进入下一轮请求，模型据此自纠——这就是循环的容错机制。"}, {"q": "工具输出超过 2000 行 / 50KB 时 Pi 会？", "options": ["直接报错", "静默丢弃", "截断并附上继续读取的提示"], "answer": 2, "why": "truncate.ts 统一截断，read 保开头并提示 offset 续读，bash 保结尾并落盘完整输出。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/ai/src/types.ts">packages/ai/src/types.ts</a>（Tool/ToolCall 定义）· <a href="../../packages/coding-agent/src/core/tools/">packages/coding-agent/src/core/tools/</a>（8 个内置工具实现）。追问请找你的 AI 导师。</p>

@@ -49,11 +49,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>接口层是 Harness 的"外壳设计"。至此 Pi 的五大机制（Loop/Context/Session/Compaction/扩展）与两个边界（安全、接口）都看完了——下一课把它们串成一次真实任务的总时序。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 的 CLI 在「管道输入」时自动进入哪种模式？","options":["interactive","print","rpc"],"answer":1,"why":"resolveAppMode：!stdinIsTTY || !stdoutIsTTY 强制降级为 print——CI 里 piped 输入直接可用。"},
-    {"q":"想把自己的 Node 应用嵌一个 Pi 后端，官方入口是？","options":["复制 main.ts 改一改","sdk.ts 的 createAgentSession()","起一个 TUI 进程"],"answer":1,"why":"createAgentSession 组装 Agent+streamFn+SessionManager+扩展，跳过 CLI。"},
-    {"q":"「事件是公共货币」指？","options":["事件可以付费","TUI/print/RPC 只是同一 AgentEvent 流的不同消费者","事件只在 TUI 有效"],"answer":1,"why":"AgentEvent 10 种生命周期事件向所有模式广播——这就是解耦的技术基础。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 的 CLI 在「管道输入」时自动进入哪种模式？", "options": ["interactive", "print", "rpc"], "answer": 1, "why": "resolveAppMode：!stdinIsTTY || !stdoutIsTTY 强制降级为 print——CI 里 piped 输入直接可用。"}, {"q": "想把自己的 Node 应用嵌一个 Pi 后端，官方入口是？", "options": ["复制 main.ts 来改一改", "createAgentSession()", "另外起一个 TUI 进程"], "answer": 1, "why": "createAgentSession 组装 Agent+streamFn+SessionManager+扩展，跳过 CLI。"}, {"q": "「事件是公共货币」指？", "options": ["事件可以付费获得", "同一事件流的不同消费者", "事件只在 TUI 有效"], "answer": 1, "why": "AgentEvent 10 种生命周期事件向所有模式广播——这就是解耦的技术基础。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/main.ts">main.ts</a> · <a href="../../packages/coding-agent/src/core/sdk.ts">core/sdk.ts</a> · <a href="../../packages/tui/README.md">packages/tui/README.md</a>。追问请找你的 AI 导师。</p>

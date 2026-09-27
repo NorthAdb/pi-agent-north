@@ -53,11 +53,7 @@
   <h2>五、接下来：毕业设计</h2>
   <p>课程结束的标志不是读完，而是<b>从空白目录写出一个 Minimal Pi-like Agent Harness</b>：LLM Provider、Agent Loop、Tool Registry、Tool Execution、Context Builder、Session Store、Compaction、Skill Loader、Extension Hook——按 需求→接口→数据结构→运行流程→最小实现→测试→扩展 的顺序，全部在 → <a href="../reference/minimal-harness.html"><strong>最终练习：从 0 手写 Minimal Pi-like Agent Harness</strong></a>。</p>
 
-  <div class="quiz" data-quiz='{"title":"毕业检索练习","items":[
-    {"q":"五层中「真正的安全边界」在哪层？","options":["Layer 1 Model","Layer 4 Harness","Layer 5 Environment"],"answer":2,"why":"物理隔离在环境层；Harness 只能提供软措施（确认门）与接缝。"},
-    {"q":"「控制流自上而下、数据流自下而上」意味着？","options":["LLM 控制 Harness","Harness 驱动一切，环境产出观察经 Runtime 进入 Context","各层自治无控制关系"],"answer":1,"why":"这正是「LLM 对 Environment 无直接通路」的另一种说法。"},
-    {"q":"修正后的公式是？","options":["Agent = LLM × Tools","Agent = Harness( Loop( Runtime( LLM ) ), Environment )","Agent = Prompt + Model"],"answer":1,"why":"嵌套式表达「谁套住谁、谁调用谁」——LLM 是被调用的函数，Harness 是主体。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "毕业检索练习", "items": [{"q": "五层中「真正的安全边界」在哪层？", "options": ["Layer 1 Model", "Layer 4 Harness", "Layer 5 Environment"], "answer": 2, "why": "物理隔离在环境层；Harness 只能提供软措施（确认门）与接缝。"}, {"q": "「控制流自上而下、数据流自下而上」意味着？", "options": ["LLM 控制 Harness", "Harness 驱动，观察向上流入", "各层自治互不控制"], "answer": 1, "why": "这正是「LLM 对 Environment 无直接通路」的另一种说法。"}, {"q": "修正后的公式是？", "options": ["Agent = LLM × Tools × Prompts × Agents", "Agent = Harness(Loop(Runtime(LLM)), Env)", "Agent = Prompt + Model + Memory + Tools"], "answer": 1, "why": "嵌套式表达「谁套住谁、谁调用谁」——LLM 是被调用的函数，Harness 是主体。"}]}'></div>
 
   <h2>延伸阅读</h2>
   <p>回看 <a href="../COURSE.md">COURSE.md</a> 与全部 13 张图做一次快速过片；然后进入 → <a href="../reference/minimal-harness.html">最终练习</a>。有任何一步卡住，问你的 AI 导师。</p>

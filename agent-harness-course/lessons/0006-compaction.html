@@ -53,11 +53,7 @@ rebuild: 投影时用 summary 替换 firstKeptEntryId 之前的一切</code></pr
   <h2>五、这张图在整个体系中的位置</h2>
   <p>Compaction 让"无限长任务"成为可能，是 Harness 区别于"套壳聊天"的标志能力之一。下一课的 Skills 用相反的思路控制上下文：与其事后压缩，不如一开始就别装进来——这就是渐进披露。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 的压缩触发条件是？","options":["消息条数超过 100","contextTokens > contextWindow − reserveTokens","用户手动输入 /compact 才会"],"answer":1,"why":"shouldCompact 比较估算 token 与 窗口−16384 余量；/compact 只是手动触发的一种。"},
-    {"q":"为什么切点永远不能落在 toolResult 上？","options":["toolResult 太长","会把 toolCall/toolResult 对拆散，请求被 API 拒绝","toolResult 是加密的"],"answer":1,"why":"成对完整性是 API 硬约束——isCutPointMessage 把 toolResult 恒定为非法切点。"},
-    {"q":"「Compaction 是状态压缩」的含义是？","options":["压缩 JSONL 文件体积","压缩的是模型可见投影，存储历史不动","删除重复消息"],"answer":1,"why":"JSONL 原文永远在；被替换的是 buildSessionProjection 的输出。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 的压缩触发条件是？", "options": ["消息条数超过 100 条", "tokens 超过窗口减余量", "必须手动 /compact 才触发"], "answer": 1, "why": "shouldCompact 比较估算 token 与 窗口−16384 余量；/compact 只是手动触发的一种。"}, {"q": "为什么切点永远不能落在 toolResult 上？", "options": ["toolResult 太长", "toolCall 对被拆散，请求被拒", "toolResult 是加密的"], "answer": 1, "why": "成对完整性是 API 硬约束——isCutPointMessage 把 toolResult 恒定为非法切点。"}, {"q": "「Compaction 是状态压缩」的含义是？", "options": ["压缩 JSONL 文件体积", "压缩的是模型可见投影，存储历史不动", "删除重复消息"], "answer": 1, "why": "JSONL 原文永远在；被替换的是 buildSessionProjection 的输出。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/core/compaction/compaction.ts">compaction.ts</a>（SUMMARIZATION_PROMPT 值得精读）。追问请找你的 AI 导师。</p>

@@ -52,11 +52,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>这是"Minimal Core"哲学的压力测试：安全这样的大事也敢外包？看完这一课你应该能自己论证：弹窗审批挡不住真正的破坏（容器才能），而 Core 假装安全比诚实更危险。下一课看接口层如何同样贯彻"核心最小"。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi Core 自带的「安全机制」是什么？","options":["每次工具调用前的审批弹窗","Project Trust：门禁项目内 .pi/* 资源的加载","内置沙箱"],"answer":1,"why":"Trust 防供应链（恶意仓库的 .pi/extensions 自动执行），不限制工具调用的触及范围——security.md 原文。"},
-    {"q":"「Tool Calling ≠ Permission System」的意思是？","options":["工具调用不安全","结构化调用解决可靠动手，不解决该不该动手","两者互斥"],"answer":1,"why":"JSON schema 让调用可靠、可校验、可审计，但授权与物理隔离是另外两层。"},
-    {"q":"官方推荐的硬隔离边界在哪？","options":["Core 内置权限矩阵","扩展确认门","容器 / micro-VM（docs/containerization.md）"],"answer":2,"why":"Harness 外部的物理隔离才是硬边界；扩展确认门只是可选的软措施。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi Core 自带的「安全机制」是什么？", "options": ["每次调用前的审批弹窗", "Project Trust 门禁加载", "一个内置的沙箱"], "answer": 1, "why": "Trust 防供应链（恶意仓库的 .pi/extensions 自动执行），不限制工具调用的触及范围——security.md 原文。"}, {"q": "「Tool Calling ≠ Permission System」的意思是？", "options": ["工具调用本身不安全", "解决可靠动手，不解决该不该动手", "二者互斥互补"], "answer": 1, "why": "JSON schema 让调用可靠、可校验、可审计，但授权与物理隔离是另外两层。"}, {"q": "官方推荐的硬隔离边界在哪？", "options": ["Core 内置权限矩阵", "容器 / micro-VM", "扩展确认门机制"], "answer": 1, "why": "Harness 外部的物理隔离才是硬边界；扩展确认门只是可选的软措施。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge doc">文档</span><a href="../../packages/coding-agent/docs/security.md">docs/security.md</a> · <a href="../../packages/coding-agent/docs/containerization.md">docs/containerization.md</a>。追问请找你的 AI 导师。</p>

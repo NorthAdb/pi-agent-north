@@ -54,11 +54,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>它是课程的总地图：后面每一课都会回到这张图，点亮其中一个部件（第 2 课点亮 agentLoop，第 5 课点亮 Session……）。现在你只需要记住一句话：<strong>LLM 是被调用的函数，Harness 是拥有控制权的主体。</strong></p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 的 Core Runtime（pi-agent-core + pi-ai）知道「read / bash」这些编码工具吗？","options":["知道，工具定义在 agent 包里","不知道，工具由产品层注入","只认识 read，不认识 bash"],"answer":1,"why":"Core 是 provider 无关、任务无关的循环；工具定义在 packages/coding-agent/src/core/tools/ 并通过 wrapper 注入。"},
-    {"q":"模型输出一个 toolCall 后，真正执行它的是？","options":["模型自己","Model Provider","Harness 侧的循环与工具执行层"],"answer":2,"why":"toolCall 只是 JSON 建议；执行发生在 agent-loop 调用 tool.execute()，最终由 OS 完成。"},
-    {"q":"「Agent = LLM + ____」，空格里最准确的词是？","options":["更长的上下文","更强的模型","Harness（循环+工具+状态+接口的工程）"],"answer":2,"why":"把任一现代 Agent 的 Harness 拆掉只留模型，它就退化成一个聊天窗口。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 的 Core Runtime（pi-agent-core + pi-ai）知道「read / bash」这些编码工具吗？", "options": ["知道，工具定义在 agent 包里", "不知道，工具由产品层注入", "只认识 read，不认识 bash"], "answer": 1, "why": "Core 是 provider 无关、任务无关的循环；工具定义在 packages/coding-agent/src/core/tools/ 并通过 wrapper 注入。"}, {"q": "模型输出一个 toolCall 后，真正执行它的是？", "options": ["模型自己", "Model Provider", "Harness 侧的循环与工具执行层"], "answer": 2, "why": "toolCall 只是 JSON 建议；执行发生在 agent-loop 调用 tool.execute()，最终由 OS 完成。"}, {"q": "「Agent = LLM + ____」，空格里最准确的词是？", "options": ["更长的上下文窗口", "更强的推理模型", "一套完整的 Harness 工程"], "answer": 2, "why": "把任一现代 Agent 的 Harness 拆掉只留模型，它就退化成一个聊天窗口。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge doc">文档</span><a href="../../README.md">仓库 README</a> 与 <a href="../../packages/agent/README.md">packages/agent/README.md</a>（最小 Agent 示例）；概览侧的中文导读见 <a href="../../learn-pi/README.md">learn-pi/</a>。有疑问随时问你的 AI 导师——每课都可以追问。</p>

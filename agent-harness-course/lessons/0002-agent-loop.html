@@ -69,11 +69,7 @@ while True:                                    # 外层：follow-up 队列
   <h2>五、这张图在整个体系中的位置</h2>
   <p>Agent Loop 是课程的"根概念"：第 3 课深入它调度的工具，第 4 课看它每轮送出的 Context 是怎么拼的，第 11 课看它跑一整场真实任务。把这个 while 循环写出来，你就已经有了最小 Harness 的骨架。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 判断「要不要继续循环」的依据是？","options":["stopReason 是否为 toolUse","消息 content 里有没有 toolCall 块","用户是否按了回车"],"answer":1,"why":"agent-loop.ts:258-262 用 content.filter(type===toolCall) 判定，而不是 stopReason。"},
-    {"q":"工具抛出异常时，Pi 会？","options":["终止整个会话","把异常吞掉不告诉模型","包成 isError=true 的 toolResult 回给模型"],"answer":2,"why":"createErrorToolResult 把错误文本变成消息，模型下一轮可自行修正——错误也是数据。"},
-    {"q":"stopReason=length（输出被截断）时，模型发出的 toolCall 会？","options":["照常执行","一律判失败不执行","只执行第一个"],"answer":1,"why":"failToolCallsFromTruncatedMessage 防止执行参数被截断的命令——安全优先。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 判断「要不要继续循环」的依据是？", "options": ["stopReason 是否为 toolUse", "消息 content 里有没有 toolCall 块", "用户是否按了回车"], "answer": 1, "why": "agent-loop.ts:258-262 用 content.filter(type===toolCall) 判定，而不是 stopReason。"}, {"q": "工具抛出异常时，Pi 会？", "options": ["终止整个会话并报错", "静默吞掉，不告诉模型", "包成 isError 消息回给模型"], "answer": 2, "why": "createErrorToolResult 把错误文本变成消息，模型下一轮可自行修正——错误也是数据。"}, {"q": "stopReason=length（输出被截断）时，模型发出的 toolCall 会？", "options": ["照常执行", "一律判失败不执行", "只执行第一个"], "answer": 1, "why": "failToolCallsFromTruncatedMessage 防止执行参数被截断的命令——安全优先。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/agent/src/agent-loop.ts">packages/agent/src/agent-loop.ts</a>（本课主角）· <a href="../../packages/agent/README.md">packages/agent/README.md</a> 的 Event Flow 一节。追问请找你的 AI 导师。</p>

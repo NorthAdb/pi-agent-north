@@ -50,11 +50,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>Session 回答"状态存在哪里"。下一课的 Compaction 是这棵树上唯一"改写投影"的合法机制——历史不动，投影被摘要替换。两课合起来才是完整的状态管理。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 的 branch() 操作会复制历史条目吗？","options":["会，深拷贝整条路径","不会，只移动 leafId 指针","会，但只复制最近 10 条"],"answer":1,"why":"branch 只拨指针，零拷贝；forkFrom() 才把路径抽成新文件。"},
-    {"q":"下列哪项不是 Pi 会话里的条目类型？","options":["compaction 摘要条目","model_change 配置变更条目","git commit 快照条目"],"answer":2,"why":"条目全集包括 message/model_change/thinking_level_change/usage/compaction/branch_summary/custom/context_edit 等，没有 git 快照。"},
-    {"q":"喂给 Agent 的 messages 是怎么来的？","options":["直接读 JSONL 全部行","从 leaf 沿 parentId 回溯并处理压缩/编辑条目的投影","内存里另存一份 messages[]"],"answer":1,"why":"buildSessionProjection 的投影才是模型可见的——这解释了 Session ≠ Context。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 的 branch() 操作会复制历史条目吗？", "options": ["会，深拷贝整条路径", "不会，只移动 leafId 指针", "会，但只复制最近 10 条"], "answer": 1, "why": "branch 只拨指针，零拷贝；forkFrom() 才把路径抽成新文件。"}, {"q": "下列哪项不是 Pi 会话里的条目类型？", "options": ["compaction 摘要条目", "model_change 配置变更条目", "git commit 快照条目"], "answer": 2, "why": "条目全集包括 message/model_change/thinking_level_change/usage/compaction/branch_summary/custom/context_edit 等，没有 git 快照。"}, {"q": "喂给 Agent 的 messages 是怎么来的？", "options": ["直接读 JSONL 的全部行", "leaf 回溯 + 压缩处理的投影", "内存里另存 messages[] 副本"], "answer": 1, "why": "buildSessionProjection 的投影才是模型可见的——这解释了 Session ≠ Context。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/core/session-manager.ts">session-manager.ts</a>。追问请找你的 AI 导师。</p>

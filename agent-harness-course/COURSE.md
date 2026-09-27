@@ -1,9 +1,27 @@
 # Agent Harness 架构课程 · 总纲
 
-> 研究对象：本仓库（fork of [earendil-works/pi](https://github.com/earendil-works/pi)）。
+> 浏览器友好入口：[index.html](index.html) · 研究对象：本仓库（fork of [earendil-works/pi](https://github.com/earendil-works/pi)）。
 > 教学立场：不背 API，只回答"**为什么这么设计**"。所有结论标注证据等级：
 > 【源码】源码可直接证明 ·【文档】官方文档证明 ·【推断】架构推断。
 > 前置导读：仓库自带的 `learn-pi/`（是什么/怎么用）；本课程在其之上做"为什么 + 源码逆向"。
+
+## 我的进度（做完一项打个 ×）
+
+- [ ] 第 01 课 · 为什么 LLM 不是 Agent
+- [ ] 第 02 课 · Agent Loop
+- [ ] 第 03 课 · Tool Calling
+- [ ] 第 04 课 · Context Assembly
+- [ ] 第 05 课 · Session / State
+- [ ] 第 06 课 · Compaction
+- [ ] 第 07 课 · Skills
+- [ ] 第 08 课 · Extensions
+- [ ] 第 09 课 · 权限与沙箱
+- [ ] 第 10 课 · TUI / RPC / SDK
+- [ ] 第 11 课 · 完整 Runtime 总时序
+- [ ] 第 12 课 · 通用 Harness 抽象
+- [ ] 第 13 课 · 横向比较
+- [ ] 第 14 课 · 五层 Mental Model
+- [ ] 毕业练习 · practice/ 17 测试全绿
 
 ## 课程地图（14 课）
 

@@ -46,11 +46,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>它是整门课程的"总装车间"：此后再学任何新 Agent，你都可以画出同构的时序图。下一课我们把这些共同点正式抽象成通用 Harness 模型。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"用户消息何时落盘？","options":["会话结束时统一写","一落地立即 appendEntry，先持久化再思考","只有出错时才写"],"answer":1,"why":"append-only + 立即持久化是 resume 能力的前提。"},
-    {"q":"每条 toolResult 在 Pi 里会同时发生什么？","options":["只发给模型","append 回 Context 并 appendEntry 进会话树","只在 TUI 显示"],"answer":1,"why":"模型世界（Context）与磁盘历史（Session）同步推进，两者由投影连接。"},
-    {"q":"bash 跑测试这一步，决定「pytest 进程能碰到什么」的是？","options":["模型","Core 权限系统","OS 用户权限与容器等外部边界"],"answer":2,"why":"第 9 课结论：Pi Core 无审批系统；物理边界在环境层。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "用户消息何时落盘？", "options": ["会话结束时统一写入", "立即 appendEntry 落盘", "只在出错时才落盘"], "answer": 1, "why": "append-only + 立即持久化是 resume 能力的前提。"}, {"q": "每条 toolResult 在 Pi 里会同时发生什么？", "options": ["只发给模型一次", "回填 Context 并落盘会话", "只在 TUI 上显示"], "answer": 1, "why": "模型世界（Context）与磁盘历史（Session）同步推进，两者由投影连接。"}, {"q": "bash 跑测试这一步，决定「pytest 进程能碰到什么」的是？", "options": ["模型", "Core 权限系统", "OS 用户权限与容器等外部边界"], "answer": 2, "why": "第 9 课结论：Pi Core 无审批系统；物理边界在环境层。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/core/agent-session.ts">agent-session.ts</a>（把整张图对号入座的最佳材料）。追问请找你的 AI 导师。</p>

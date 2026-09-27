@@ -50,8 +50,8 @@ def stream_fn(model, context) -> AssistantMessage   # SSE 或整块均可</code>
   <h2>第 2 步 · 数据结构（磁盘形状先定，代码后写）</h2>
   <pre><code># session.jsonl —— 每行一个 Entry（对应 session-manager.ts:43）
 {"type":"session",   "id":"...", "cwd":"...", "ts":0}
-{"type":"message",   "id":"e1","parent_id":null,"msg":{...user}}
-{"type":"message",   "id":"e2","parent_id":"e1","msg":{...assistant}}
+{"type":"message",   "id":"e1","parent_id":null,"message":{...user}}
+{"type":"message",   "id":"e2","parent_id":"e1","message":{...assistant}}
 {"type":"tool_result","id":"e3","parent_id":"e2", "is_error":false, ...}
 {"type":"compaction","id":"e9","parent_id":"e8",
  "summary":"## Goal ... ## Progress ...", "first_kept_entry_id":"e4"}

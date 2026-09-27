@@ -52,11 +52,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>Context 是 Loop 的"每轮输入"，也是后面两大机制的舞台：历史从哪来（第 5 课 Session）、太长了怎么办（第 6 课 Compaction）。记住这句：<strong>Context 是"本轮送进模型的信息"，Session 是"长期保存的任务历史与状态"。</strong></p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 的系统提示词以什么形式组装？","options":["一整段硬编码字符串","分 sections 独立生成、可 diff 更新","完全由 AGENTS.md 提供"],"answer":1,"why":"buildSystemPromptSections 拆成 preamble/tools/rules/docs/project_context/skills/cwd 等段，diff 后只发变更。"},
-    {"q":"Context 和 Session 的关系是？","options":["同义词","Context 是本轮投影，Session 是磁盘完整历史","Session 是 Context 的子集"],"answer":1,"why":"compaction/context_edit 改变投影而不改历史——模型看见的被裁剪，历史永远完整。"},
-    {"q":"对 prompt cache 最友好的做法是？","options":["每轮全量重发","稳定大块放前面、易变小块放后面、只发 diff","尽量用短 prompt"],"answer":1,"why":"sections diff + 静态在前 + cacheWarmer 预热，都是为了让前缀命中缓存。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 的系统提示词以什么形式组装？", "options": ["一整段硬编码的字符串", "分 sections 生成、diff 更新", "完全由 AGENTS.md 动态提供"], "answer": 1, "why": "buildSystemPromptSections 拆成 preamble/tools/rules/docs/project_context/skills/cwd 等段，diff 后只发变更。"}, {"q": "Context 和 Session 的关系是？", "options": ["同义词", "Context 是本轮投影，Session 是磁盘完整历史", "Session 是 Context 的子集"], "answer": 1, "why": "compaction/context_edit 改变投影而不改历史——模型看见的被裁剪，历史永远完整。"}, {"q": "对 prompt cache 最友好的做法是？", "options": ["每轮把全量重新发一遍", "稳定段在前，只下发 diff", "prompt 尽量写得短一些"], "answer": 1, "why": "sections diff + 静态在前 + cacheWarmer 预热，都是为了让前缀命中缓存。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/core/system-prompt.ts">system-prompt.ts</a> · <a href="../../packages/coding-agent/src/core/resource-loader.ts">resource-loader.ts</a>。追问请找你的 AI 导师。</p>

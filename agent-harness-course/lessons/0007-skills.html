@@ -55,11 +55,7 @@
   <h2>五、这张图在整个体系中的位置</h2>
   <p>Skills 是"知识面的扩展"，下一课的 Extensions 是"运行时的扩展"——两者构成 Pi 可扩展性的两翼，也是"Minimal Core"哲学的两大支柱。</p>
 
-  <div class="quiz" data-quiz='{"title":"检索练习（先凭记忆作答）","items":[
-    {"q":"Pi 把技能全文注入系统提示词吗？","options":["总是注入","不注入，只注入目录，全文由模型用 read 工具按需加载","只有用户级技能注入"],"answer":1,"why":"formatSkillsForPrompt 只放 name+description+location；全文加载借用普通工具循环，无特殊机制。"},
-    {"q":"disable-model-invocation: true 的技能？","options":["完全禁用","不进提示词目录，只能 /skill:name 显式调用","只在项目级生效"],"answer":1,"why":"不给模型自主触发权，把触发收回到人手里。"},
-    {"q":"渐进披露对 prompt cache 的好处是？","options":["没有影响","菜单小且稳定 → 前缀稳定 → 缓存命中","全文注入缓存更全"],"answer":1,"why":"常驻部分越小越稳定，前缀缓存命中率越高，token 费用与延迟越低。"}
-  ]}'></div>
+  <div class="quiz" data-quiz='{"title": "检索练习（先凭记忆作答）", "items": [{"q": "Pi 把技能全文注入系统提示词吗？", "options": ["总是全文注入", "只注入目录，全文按需加载", "只有用户级技能注入"], "answer": 1, "why": "formatSkillsForPrompt 只放 name+description+location；全文加载借用普通工具循环，无特殊机制。"}, {"q": "disable-model-invocation: true 的技能？", "options": ["被完全禁用不可用", "仅 /skill:name 调用", "只在项目级目录生效"], "answer": 1, "why": "不给模型自主触发权，把触发收回到人手里。"}, {"q": "渐进披露对 prompt cache 的好处是？", "options": ["没有任何影响", "菜单稳定让缓存命中", "全文注入缓存更全"], "answer": 1, "why": "常驻部分越小越稳定，前缀缓存命中率越高，token 费用与延迟越低。"}]}'></div>
 
   <h2>延伸阅读（一手来源）</h2>
   <p><span class="badge src">源码</span><a href="../../packages/coding-agent/src/core/skills.ts">skills.ts</a>。追问请找你的 AI 导师。</p>

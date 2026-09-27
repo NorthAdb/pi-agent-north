@@ -21,6 +21,7 @@
 - [ ] 第 12 课 · 通用 Harness 抽象
 - [ ] 第 13 课 · 横向比较
 - [ ] 第 14 课 · 五层 Mental Model
+- [ ] 第 15 课（进阶） · MCP 深潜
 - [ ] 毕业练习 · practice/ 17 测试全绿
 
 ## 课程地图（14 课）
@@ -41,6 +42,7 @@
 | [0012](lessons/0012-generic-harness.html) | 通用 Agent Harness 抽象 | [12](lessons/diagrams/12-generic-harness.html) | 哪些是通用需求，哪些是 Pi 的选择？ |
 | [0013](lessons/0013-comparison.html) | 横向比较 | — | 各家在"Core vs Harness"边界上的分歧 |
 | [0014](lessons/0014-mental-model.html) | 五层 Mental Model | [13](lessons/diagrams/13-mental-model.html) | Agent = LLM + Loop + Harness + Environment 成立吗？ |
+| [0015](lessons/0015-mcp.html) | **进阶** · MCP 深潜 | [14](lessons/diagrams/14-mcp-bridge.html) | MCP 是什么？为什么 Pi 零实现？何时该进 Core？ |
 
 最终练习：[从 0 手写 Minimal Pi-like Agent Harness](reference/minimal-harness.html)，配套可运行工作区 [practice/](practice/README.md)（接口 + 17 个验收测试已就位，实现留给你）。
 随查随用：[术语表](reference/glossary.html) · [关键源码地图](reference/source-map.html) · [一页纸速查表](reference/cheatsheet.html) · [图库](diagrams.html)。

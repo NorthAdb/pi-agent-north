@@ -56,7 +56,7 @@ def check_nav():
              "0004-context-assembly", "0005-session-tree", "0006-compaction",
              "0007-skills", "0008-extensions", "0009-capability-boundary",
              "0010-interfaces", "0011-full-runtime", "0012-generic-harness",
-             "0013-comparison", "0014-mental-model"]
+             "0013-comparison", "0014-mental-model", "0015-mcp"]
     for i, slug in enumerate(order):
         p = ROOT / "lessons" / f"{slug}.html"
         html = p.read_text(encoding="utf-8")
@@ -79,7 +79,8 @@ def check_lesson_diagram():
                "0009-capability-boundary": "09-capability-boundary",
                "0010-interfaces": "10-interfaces", "0011-full-runtime": "11-full-runtime",
                "0012-generic-harness": "12-generic-harness",
-               "0014-mental-model": "13-mental-model"}
+               "0014-mental-model": "13-mental-model",
+               "0015-mcp": "14-mcp-bridge"}
     for slug, diagram in mapping.items():
         html = (ROOT / "lessons" / f"{slug}.html").read_text(encoding="utf-8")
         expected = f"diagrams/{diagram}.html"

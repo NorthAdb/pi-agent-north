@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Diagram 14 · MCP 与 Pi：桥接蓝图（设计推断，非当前实现）",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1160,
+      490
+    ],
+    "repository": {
+      "url": "https://github.com/NorthAdb/pi-agent-north",
+      "provider": "github",
+      "revision": "b46690fa1343db0286b205bb21b61492740a7fbc"
+    }
+  },
+  "components": [
+    {
+      "id": "llm",
+      "type": "cloud",
+      "label": "LLM",
+      "sublabel": "只认工具菜单",
+      "pos": [
+        60,
+        70
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "core",
+      "type": "backend",
+      "label": "AgentSession 核心",
+      "sublabel": "零 MCP 代码【源码】",
+      "tag": "Minimal Core",
+      "pos": [
+        360,
+        70
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "ExtensionAPI",
+      "sublabel": "registerTool 接缝",
+      "pos": [
+        660,
+        70
+      ],
+      "size": [
+        190,
+        64
+      ],
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/extensions/types.ts",
+          "line": 1762
+        }
+      ]
+    },
+    {
+      "id": "trust",
+      "type": "security",
+      "label": "Project Trust",
+      "sublabel": "门禁 .pi/extensions",
+      "pos": [
+        60,
+        210
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/trust-manager.ts",
+          "line": 1
+        }
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "backend",
+      "label": "Tool Registry",
+      "sublabel": "工具菜单动态扩充",
+      "pos": [
+        360,
+        210
+      ],
+      "size": [
+        190,
+        64
+      ]
+    },
+    {
+      "id": "bridge",
+      "type": "backend",
+      "label": "MCP Bridge 扩展",
+      "sublabel": "一个普通 .ts 扩展",
+      "tag": "设计蓝图【推断】",
+      "pos": [
+        660,
+        210
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "client",
+      "type": "messagebus",
+      "label": "MCP Client",
+      "sublabel": "JSON-RPC 2.0 会话",
+      "pos": [
+        940,
+        210
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "servers",
+      "type": "external",
+      "label": "MCP Servers",
+      "sublabel": "tools/resources/prompts",
+      "pos": [
+        660,
+        350
+      ],
+      "size": [
+        200,
+        64
+      ]
+    },
+    {
+      "id": "transport",
+      "type": "external",
+      "label": "stdio / Streamable HTTP",
+      "sublabel": "子进程或远端",
+      "pos": [
+        940,
+        350
+      ],
+      "size": [
+        170,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "外部进程 · 权限=OS 用户（第 9 课）",
+      "wraps": [
+        "servers",
+        "transport"
+      ],
+      "pad": 16
+    }
+  ],
+  "connections": [
+    {
+      "from": "llm",
+      "to": "core",
+      "label": "toolCall 建议",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": 56
+    },
+    {
+      "from": "core",
+      "to": "api",
+      "label": "接缝",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": 56
+    },
+    {
+      "from": "api",
+      "to": "bridge",
+      "label": "工厂加载",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "from": "bridge",
+      "to": "client",
+      "label": "JSON-RPC",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": 56
+    },
+    {
+      "from": "client",
+      "to": "transport",
+      "label": "连接",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "from": "transport",
+      "to": "servers",
+      "label": "tools/resources/prompts",
+      "fromSide": "left",
+      "toSide": "right",
+      "labelDy": -40
+    },
+    {
+      "from": "bridge",
+      "to": "registry",
+      "label": "动态注入",
+      "fromSide": "left",
+      "toSide": "right",
+      "labelDy": 56
+    },
+    {
+      "from": "registry",
+      "to": "core",
+      "label": "进菜单",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelDy": -24
+    },
+    {
+      "from": "trust",
+      "to": "registry",
+      "label": "门禁加载",
+      "fromSide": "right",
+      "toSide": "left",
+      "labelDy": 56
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "MCP 是什么【公开资料】",
+      "items": [
+        "Model Context Protocol：JSON-RPC 2.0 上的工具生态协议",
+        "Host 内嵌 Client，Server 以 stdio 子进程或 HTTP 暴露能力",
+        "三种原语：tools（可调用）/ resources（可读）/ prompts（模板）"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Pi 的现状【源码 + 文档】",
+      "items": [
+        "packages/*/src 中零 MCP 实现（全库 grep 证据）",
+        "learn-pi 刻意省略：要 MCP，扩展层实现即可",
+        "本图的 Bridge 是设计蓝图【推断】——Pi 当前没有这个扩展"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "何时该进 Core",
+      "items": [
+        "生态需求密度：用户天天要接 N 个 server？",
+        "信任模型：进程审批/沙箱策略能否标准化？",
+        "维护预算：协议演化（spec 变更）谁长期背？"
+      ]
+    }
+  ]
+}

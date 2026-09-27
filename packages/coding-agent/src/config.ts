@@ -4,6 +4,7 @@ import { basename, dirname, join, resolve, sep, win32 } from "path";
 import { fileURLToPath } from "url";
 import { spawnProcessSync } from "./utils/child-process.ts";
 import { normalizePath } from "./utils/paths.ts";
+import { stripBom } from "./utils/text.ts";
 
 // =============================================================================
 // Package Detection
@@ -21,6 +22,10 @@ export const isBunBinary =
 
 /** Detect if Bun is the runtime (compiled binary or bun run) */
 export const isBunRuntime = !!process.versions.bun;
+
+/** Detect the esbuild-bundled Node.js distribution. */
+declare const PI_BUNDLED_NODE: boolean;
+export const isBundledNode = typeof PI_BUNDLED_NODE !== "undefined" && PI_BUNDLED_NODE;
 
 // =============================================================================
 // Install Method Detection
@@ -333,7 +338,7 @@ export function getSelfUpdateUnavailableInstruction(
 	const method = detectInstallMethod();
 	const target = normalizeSelfUpdatePackageTarget(updatePackageTarget);
 	if (method === "bun-binary") {
-		return `Download from: https://github.com/earendil-works/pi-mono/releases/latest`;
+		return `Download from: https://github.com/earendil-works/pi/releases/latest`;
 	}
 	const command = getSelfUpdateCommandForMethod(method, packageName, target, npmCommand);
 	if (command) {
@@ -361,9 +366,26 @@ export function getUpdateInstruction(packageName: string): string {
 /**
  * Get the base directory for resolving package assets (themes, package.json, README.md, CHANGELOG.md).
  * - For Bun binary: returns the directory containing the executable
- * - For Node.js (dist/): returns __dirname (the dist/ directory)
- * - For tsx (src/): returns parent directory (the package root)
+ * - For Node.js: returns the package root containing package.json
+ * - Ignores Bun binary metadata copied into dist/ when the package root is available
  */
+export function findNodePackageDir(startDir: string): string {
+	let dir = startDir;
+	while (dir !== dirname(dir)) {
+		if (existsSync(join(dir, "package.json"))) {
+			const parent = dirname(dir);
+			// build:binary places Bun's metadata inside dist/. Node still needs the
+			// package root so its dist-relative asset paths do not become dist/dist/.
+			if (basename(dir) === "dist" && existsSync(join(parent, "package.json"))) {
+				return parent;
+			}
+			return dir;
+		}
+		dir = dirname(dir);
+	}
+	return startDir;
+}
+
 export function getPackageDir(): string {
 	// Allow override via environment variable (useful for Nix/Guix where store paths tokenize poorly)
 	const envDir = process.env.PI_PACKAGE_DIR;
@@ -375,23 +397,14 @@ export function getPackageDir(): string {
 		// Bun binary: process.execPath points to the compiled executable
 		return dirname(process.execPath);
 	}
-	// Node.js: walk up from __dirname until we find package.json
-	let dir = __dirname;
-	while (dir !== dirname(dir)) {
-		if (existsSync(join(dir, "package.json"))) {
-			return dir;
-		}
-		dir = dirname(dir);
-	}
-	// Fallback (shouldn't happen)
-	return __dirname;
+	return findNodePackageDir(__dirname);
 }
 
 /**
  * Get path to built-in themes directory (shipped with package)
  * - For Bun binary: theme/ next to executable
  * - For Node.js (dist/): dist/modes/interactive/theme/
- * - For tsx (src/): src/modes/interactive/theme/
+ * - For source (src/): src/modes/interactive/theme/
  */
 export function getThemesDir(): string {
 	if (isBunBinary) {
@@ -407,7 +420,7 @@ export function getThemesDir(): string {
  * Get path to HTML export template directory (shipped with package)
  * - For Bun binary: export-html/ next to executable
  * - For Node.js (dist/): dist/core/export-html/
- * - For tsx (src/): src/core/export-html/
+ * - For source (src/): src/core/export-html/
  */
 export function getExportTemplateDir(): string {
 	if (isBunBinary) {
@@ -447,7 +460,7 @@ export function getChangelogPath(): string {
  * Get path to built-in interactive assets directory.
  * - For Bun binary: assets/ next to executable
  * - For Node.js (dist/): dist/modes/interactive/assets/
- * - For tsx (src/): src/modes/interactive/assets/
+ * - For source (src/): src/modes/interactive/assets/
  */
 export function getInteractiveAssetsDir(): string {
 	if (isBunBinary) {
@@ -478,7 +491,7 @@ interface PackageJson {
 
 let pkg: PackageJson = {};
 try {
-	pkg = JSON.parse(readFileSync(getPackageJsonPath(), "utf-8")) as PackageJson;
+	pkg = JSON.parse(stripBom(readFileSync(getPackageJsonPath(), "utf-8"))) as PackageJson;
 } catch (e: unknown) {
 	const err = e as NodeJS.ErrnoException;
 	if (err.code !== "ENOENT") throw e;
@@ -501,7 +514,7 @@ export function expandTildePath(path: string): string {
 
 const DEFAULT_SHARE_VIEWER_URL = "https://pi.dev/session/";
 
-/** Get the share viewer URL for a gist ID */
+/** Get the share viewer URL for a gist ID. */
 export function getShareViewerUrl(gistId: string): string {
 	const baseUrl = process.env.PI_SHARE_VIEWER_URL || DEFAULT_SHARE_VIEWER_URL;
 	return `${baseUrl}#${gistId}`;

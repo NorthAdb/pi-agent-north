@@ -1,0 +1,355 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Diagram 01 · Pi Agent Harness 总体架构",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/NorthAdb/pi-agent-north",
+      "provider": "github",
+      "revision": "47c9be752f88c26f4ffa06caf0d2a3888117d9b1"
+    },
+    "viewBox": [
+      1380,
+      840
+    ]
+  },
+  "layout": {
+    "mode": "grid",
+    "cols": 5,
+    "gapX": 40,
+    "gapY": 54,
+    "cellW": 224,
+    "cellH": 100
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "用户",
+      "sublabel": "发出任务 · 观察输出",
+      "row": 0,
+      "col": 0,
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "tui",
+      "type": "frontend",
+      "label": "TUI（InteractiveMode）",
+      "sublabel": "产品层入口之一",
+      "row": 0,
+      "col": 1,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/modes/interactive/interactive-mode.ts",
+          "line": 568
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "runtime",
+      "type": "backend",
+      "label": "AgentSessionRuntime",
+      "sublabel": "new / fork / switch 会话",
+      "row": 0,
+      "col": 2,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/agent-session-runtime.ts",
+          "line": 74
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "session",
+      "type": "backend",
+      "label": "AgentSession",
+      "sublabel": "产品层状态机",
+      "row": 0,
+      "col": 3,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/agent-session.ts",
+          "line": 1
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "store",
+      "type": "database",
+      "label": "Session JSONL",
+      "sublabel": "append-only 历史树",
+      "row": 0,
+      "col": 4,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/session-manager.ts",
+          "line": 1080
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "context",
+      "type": "database",
+      "label": "Context",
+      "sublabel": "systemPrompt+messages+tools",
+      "row": 1,
+      "col": 2,
+      "sources": [
+        {
+          "path": "packages/ai/src/types.ts",
+          "line": 697
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "loop",
+      "type": "backend",
+      "label": "agentLoop()",
+      "sublabel": "双层 while 循环",
+      "tag": "循环心脏",
+      "row": 1,
+      "col": 3,
+      "sources": [
+        {
+          "path": "packages/agent/src/agent-loop.ts",
+          "line": 162
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "provider",
+      "type": "cloud",
+      "label": "Model Provider（pi-ai）",
+      "sublabel": "约 40 家 provider",
+      "row": 1,
+      "col": 4,
+      "sources": [
+        {
+          "path": "packages/ai/src/models.ts",
+          "line": 889
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "harnesssvc",
+      "type": "backend",
+      "label": "Compaction·Skills·Ext",
+      "sublabel": "Harness 服务层",
+      "row": 2,
+      "col": 2,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/compaction/compaction.ts",
+          "line": 148
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "registry",
+      "type": "backend",
+      "label": "Tool Registry",
+      "sublabel": "read/bash/edit/write …",
+      "row": 2,
+      "col": 3,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/tools/index.ts",
+          "line": 95
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "executor",
+      "type": "messagebus",
+      "label": "Tool Execution",
+      "sublabel": "AgentTool.execute",
+      "row": 2,
+      "col": 4,
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/core/tools/tool-definition-wrapper.ts",
+          "line": 5
+        }
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "os",
+      "type": "external",
+      "label": "OS / Shell / Filesystem",
+      "sublabel": "外部系统",
+      "row": 3,
+      "col": 4,
+      "size": [
+        180,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "产品层 Harness · pi-coding-agent",
+      "wraps": [
+        "tui",
+        "runtime",
+        "session",
+        "store",
+        "harnesssvc",
+        "registry",
+        "executor"
+      ],
+      "pad": 18
+    },
+    {
+      "kind": "region",
+      "label": "Core Runtime · pi-agent-core + pi-ai（provider 无关）",
+      "wraps": [
+        "context",
+        "loop",
+        "provider"
+      ],
+      "pad": 14
+    }
+  ],
+  "connections": [
+    {
+      "from": "user",
+      "to": "tui",
+      "label": "输入 / 观察",
+      "labelDy": 56
+    },
+    {
+      "from": "tui",
+      "to": "runtime",
+      "label": "用户事件",
+      "labelDy": 56
+    },
+    {
+      "from": "runtime",
+      "to": "session",
+      "label": "编排会话",
+      "labelDy": 56
+    },
+    {
+      "from": "session",
+      "to": "store",
+      "label": "appendEntry（JSONL）",
+      "labelDy": 56
+    },
+    {
+      "from": "session",
+      "to": "loop",
+      "label": "驱动（注入 streamFn）",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    {
+      "from": "loop",
+      "to": "context",
+      "label": "读写 messages",
+      "labelDy": 56
+    },
+    {
+      "from": "loop",
+      "to": "provider",
+      "label": "streamSimple 流式往返",
+      "labelDy": 56
+    },
+    {
+      "from": "loop",
+      "to": "registry",
+      "label": "toolCall 调度",
+      "labelDy": 24
+    },
+    {
+      "from": "registry",
+      "to": "executor",
+      "label": "execute()",
+      "labelDy": 56
+    },
+    {
+      "from": "executor",
+      "to": "os",
+      "label": "spawn / 文件读写",
+      "labelDy": 24
+    },
+    {
+      "from": "harnesssvc",
+      "to": "context",
+      "label": "钩子：压缩 / 注入",
+      "variant": "dashed",
+      "labelDy": -18
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "三层边界",
+      "items": [
+        "Core Runtime（pi-agent-core + pi-ai）完全不知道「编码」这件事",
+        "产品层 pi-coding-agent 负责组装：会话、工具、提示词、UI"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "为什么 LLM 不是 Agent",
+      "items": [
+        "LLM 只做一件事：收 Context，吐 token，请求结束即失忆",
+        "它不能执行工具、不能持久化、看不到文件系统"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "读图顺序",
+      "items": [
+        "主路径：用户 → TUI → AgentSession → agentLoop",
+        "工具路径：agentLoop → Registry → Executor → OS"
+      ]
+    }
+  ]
+}

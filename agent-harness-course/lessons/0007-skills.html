@@ -23,7 +23,7 @@
   </figure>
 
   <h2>二、如何从图上读懂 Pi</h2>
-  <p><span class="badge src">源码</span><strong>发现与索引。</strong><code>packages/coding-agent/src/core/skills.ts:425</code> 的 <code>loadSkills()</code> 扫描 <code>~/.pi/agent/skills</code>（用户级）与 <code>&lt;cwd&gt;/.pi/skills</code>（项目级），规则极简：<b>目录里有 SKILL.md 就是技能根，不再下钻</b>（:160）。frontmatter 校验严格：name ≤64 字符小写连字符，description 必填 ≤1024（:92-127）。</p>
+  <p><span class="badge src">源码</span><strong>发现与索引。</strong><code>packages/coding-agent/src/core/skills.ts:409</code> 的 <code>loadSkills()</code> 扫描 <code>~/.pi/agent/skills</code>（用户级）与 <code>&lt;cwd&gt;/.pi/skills</code>（项目级），规则极简：<b>目录里有 SKILL.md 就是技能根，不再下钻</b>（:160）。frontmatter 校验严格：name ≤64 字符小写连字符，description 必填 ≤1024（:92-127）。</p>
   <p><span class="badge src">源码</span><strong>披露：只有菜单进提示词。</strong><code>formatSkillsForPrompt()</code>（:355）生成一段 XML：</p>
   <pre><code>&lt;available_skills&gt;
   &lt;skill&gt;&lt;name&gt;…&lt;/name&gt;&lt;description&gt;…&lt;/description&gt;

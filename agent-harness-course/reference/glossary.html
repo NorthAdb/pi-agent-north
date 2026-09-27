@@ -37,6 +37,11 @@
     <tr><td>AgentEvent</td><td>10 种生命周期事件（agent_start/end、message_*、tool_execution_*）</td><td>第 10 课 · <code>agent/types.ts:485</code></td></tr>
     <tr><td>steering / followUp</td><td>中途插话 / 排队后续消息——Loop 外层 while 的两个驱动源</td><td>第 2 课 · <code>agent.ts</code></td></tr>
     <tr><td>Mental Model 五层</td><td>Model → Agent Loop → Runtime → Harness → Environment</td><td><a href="../lessons/0014-mental-model.html">第 14 课</a></td></tr>
+    <tr><td>Sections（提示词分块）</td><td>Pi 把系统提示词拆成 preamble/tools/rules/docs/project_context/skills/cwd 等独立段，diff 后只发变更</td><td>第 4 课 · <code>system-prompt.ts:121/204</code></td></tr>
+    <tr><td>Prompt Cache</td><td>Provider 端的前缀缓存：稳定大块在前、易变小块在后、只发 diff，可省钱降延迟</td><td>第 4 课</td></tr>
+    <tr><td>Append-only</td><td>只追加不修改的写入策略；Pi 的会话 JSONL 与大多数数据库 WAL 同构</td><td>第 5 课</td></tr>
+    <tr><td>Minimal Core</td><td>Pi 的架构信条：Core 只留接缝（循环/事件/注册面），工作流与安全政策外包给扩展与环境</td><td><a href="../lessons/0008-extensions.html">第 8 课</a></td></tr>
+    <tr><td>三箱分箱法</td><td>评判任何 Agent 的方法：通用必需 / 领域特有 / 该产品自己的设计选择</td><td><a href="../lessons/0012-generic-harness.html">第 12 课</a></td></tr>
   </table>
 
   <footer class="note">术语与源码如有出入，以当前 checkout 的源码为准（commit 47c9be75）。回 <a href="../COURSE.md">课程总纲</a>。</footer>

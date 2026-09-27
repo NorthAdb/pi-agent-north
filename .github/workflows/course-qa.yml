@@ -19,3 +19,7 @@ jobs:
           python-version: "3.12"
       - name: Run course QA gate
         run: python agent-harness-course/qa.py
+      - name: Practice tests must stay collectable
+        run: |
+          pip install pytest
+          python -m pytest --collect-only -q agent-harness-course/practice/tests

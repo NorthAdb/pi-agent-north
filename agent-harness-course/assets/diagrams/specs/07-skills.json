@@ -46,7 +46,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/skills.ts",
-          "line": 425
+          "line": 409
         }
       ]
     },

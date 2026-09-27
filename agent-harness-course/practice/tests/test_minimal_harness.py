@@ -167,5 +167,7 @@ class TestCompaction:
         summarizer = MockProvider([{"text": "## Goal\n压缩测试"}])
         compact(ctx, session, summarizer, window=1000)
         assert any(e.get("type") == "compaction" for e in session.entries)
-        assert "压缩测试" in ctx.system_prompt + str(ctx.messages[:1])
+        # 摘要内容必须出现在模型可见范围内（system_prompt 或任一条消息）
+        visible = ctx.system_prompt + "".join(str(m) for m in ctx.messages)
+        assert "压缩测试" in visible
         assert len(ctx.messages) < 8

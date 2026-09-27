@@ -24,7 +24,7 @@
 
   <h2>二、如何从图上读懂 Pi</h2>
   <p><span class="badge src">源码</span><strong>组装层是分块的（sections）。</strong><code>packages/coding-agent/src/core/system-prompt.ts:121</code> 的 <code>buildSystemPromptSections()</code> 把系统提示词拆成 <code>preamble / tools / rules / docs / addendum / project_context / skills / cwd</code> 八段，各自独立生成、独立替换。模型看到的最终提示词 = 各段包上 XML 标签的拼接。</p>
-  <p><span class="badge src">源码</span><strong>项目指令是"沿目录向上收集"的。</strong><code>resource-loader.ts:123-212</code> 按候选名 <code>AGENTS.override.md → AGENTS.md → CLAUDE.md</code> 先读全局 <code>~/.pi/agent/AGENTS.md</code>，再从 cwd 沿祖先目录向上收集——这是"项目级指令"的动态来源。</p>
+  <p><span class="badge src">源码</span><strong>项目指令是"沿目录向上收集"的。</strong><code>resource-loader.ts:127-212</code> 按候选名 <code>AGENTS.override.md → AGENTS.md → CLAUDE.md</code> 先读全局 <code>~/.pi/agent/AGENTS.md</code>，再从 cwd 沿祖先目录向上收集——这是"项目级指令"的动态来源。</p>
   <p><span class="badge src">源码</span><strong>分块 + diff 是为 prompt cache 服务的。</strong><code>diffSystemPromptSections</code>（system-prompt.ts:204）只把<b>变化的 section</b> 下发；静态段在前、动态段在后，配合 coding-agent 侧的 cacheWarmer 预热——上下文没变的部分命中缓存，省钱且降延迟。<strong>影响缓存的设计原则：内容稳定的大块放前面，易变的小块放后面。</strong></p>
   <p><strong>Session ≠ Context。</strong>Session 是磁盘上完整的历史树（第 5 课）；Context 只是<b>本轮</b>送给模型的那一份投影。投影会因 compaction（第 6 课）和 context_edit 条目而与原始历史不同——历史永远在，模型看见的被精心裁剪过。</p>
 

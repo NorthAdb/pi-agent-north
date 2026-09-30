@@ -2,7 +2,7 @@
 
 ## 官方支持的换皮
 
-`packages/coding-agent/docs/development.md`：
+换皮没有独立文档页。改 `packages/coding-agent/package.json` 的 `piConfig`（解析逻辑在 `packages/coding-agent/src/config.ts`）：
 
 ```json
 {
@@ -15,9 +15,10 @@
 
 同时调整 `bin` 等字段。影响：
 
-- CLI 横幅 / 产品名  
-- 配置目录名  
-- 相关环境变量命名习惯  
+- CLI 横幅 / 产品名（`APP_NAME` / `APP_TITLE`）
+- 配置目录名（`CONFIG_DIR_NAME`）→ 用户目录 `~/.pi/agent` 与项目目录 `.pi` 同时改名
+- 环境变量前缀：`PI_CODING_AGENT_DIR` / `PI_CODING_AGENT_SESSION_DIR` 变成 `<NAME>_CODING_AGENT_*`
+- `pi install` 落盘位置、`pi update --self` 的目标包名
 
 **优先改配置，而不是全局替换字符串。**
 
@@ -59,7 +60,7 @@
 添加 upstream remote 示例：
 
 ```powershell
-cd E:\AI-Tech\pi-agent
+cd E:\pi_north
 git remote add upstream https://github.com/earendil-works/pi.git
 git fetch upstream
 ```

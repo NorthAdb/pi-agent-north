@@ -13,7 +13,10 @@
 
 ## 工作笔记
 
-- 仓库结构（已核实）：packages/{agent, ai, coding-agent, tui, protocol, server, client, session-backends, durable, telemetry, evals, chord}。
+- 仓库结构（已核实，0.99.1）：packages/{chord, telemetry, tui, ai, durable, agent, protocol, client, server, codemode, mcp, session-backends, coding-agent, evals}。
+- 2026-09 同步上游 0.99.1（merge `9d7c377e`）：新增 `codemode` / `mcp` 两个包，MCP 成为可替换的内置扩展。
+  第 15 课据此重写；Diagram 14 的 spec 与渲染 HTML 文案同步更新，并用 headless Chrome 重拍了 4 张视口截图
+  （Archify 不在本机，渲染件是文本级替换，下次可用 Archify 重新渲染覆盖）。
 - fork 内已有 learn-pi/ 中文概览导读（22 篇），本课程不与其重复：learn-pi 是"是什么/怎么用"，本课程是"为什么这样设计 + 源码逆向"。
 - Archify 图表嵌入 lessons/*.html；每个 lesson 一个主题一个图。
 - 证据标注约定：【源码】【文档】【推断】。

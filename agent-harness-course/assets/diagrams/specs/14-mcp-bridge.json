@@ -2,7 +2,7 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Diagram 14 · MCP 与 Pi：桥接蓝图（设计推断，非当前实现）",
+    "title": "Diagram 14 · MCP 与 Pi：内置扩展接入路径（0.99）",
     "locale": "zh-CN",
     "quality_profile": "showcase",
     "viewBox": [
@@ -12,7 +12,7 @@
     "repository": {
       "url": "https://github.com/NorthAdb/pi-agent-north",
       "provider": "github",
-      "revision": "b46690fa1343db0286b205bb21b61492740a7fbc"
+      "revision": "9d7c377e69db1ffe18214ad462243224b4647402"
     }
   },
   "components": [
@@ -34,7 +34,7 @@
       "id": "core",
       "type": "backend",
       "label": "AgentSession 核心",
-      "sublabel": "零 MCP 代码【源码】",
+      "sublabel": "四个内置工具【源码】",
       "tag": "Minimal Core",
       "pos": [
         360,
@@ -61,7 +61,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/extensions/types.ts",
-          "line": 1762
+          "line": 1839
         }
       ]
     },
@@ -69,7 +69,7 @@
       "id": "trust",
       "type": "security",
       "label": "Project Trust",
-      "sublabel": "门禁 .pi/extensions",
+      "sublabel": "门禁 .pi/mcp.json",
       "pos": [
         60,
         210
@@ -81,7 +81,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/trust-manager.ts",
-          "line": 1
+          "line": 32
         }
       ]
     },
@@ -89,7 +89,7 @@
       "id": "registry",
       "type": "backend",
       "label": "Tool Registry",
-      "sublabel": "工具菜单动态扩充",
+      "sublabel": "默认不声明给模型",
       "pos": [
         360,
         210
@@ -102,9 +102,9 @@
     {
       "id": "bridge",
       "type": "backend",
-      "label": "MCP Bridge 扩展",
-      "sublabel": "一个普通 .ts 扩展",
-      "tag": "设计蓝图【推断】",
+      "label": "内置 MCP 扩展",
+      "sublabel": "builtin · replaceable",
+      "tag": "已内置【源码】",
       "pos": [
         660,
         210
@@ -112,6 +112,12 @@
       "size": [
         200,
         64
+      ],
+      "sources": [
+        {
+          "path": "packages/coding-agent/src/extensions/mcp/index.ts",
+          "line": 7
+        }
       ]
     },
     {
@@ -126,6 +132,12 @@
       "size": [
         170,
         64
+      ],
+      "sources": [
+        {
+          "path": "packages/mcp/src/index.ts",
+          "line": 2
+        }
       ]
     },
     {
@@ -220,7 +232,7 @@
     {
       "from": "bridge",
       "to": "registry",
-      "label": "动态注入",
+      "label": "按 exposure 注册",
       "fromSide": "left",
       "toSide": "right",
       "labelDy": 56
@@ -228,7 +240,7 @@
     {
       "from": "registry",
       "to": "core",
-      "label": "进菜单",
+      "label": "direct 才进菜单",
       "fromSide": "top",
       "toSide": "bottom",
       "labelDy": -24
@@ -248,26 +260,26 @@
       "title": "MCP 是什么【公开资料】",
       "items": [
         "Model Context Protocol：JSON-RPC 2.0 上的工具生态协议",
-        "Host 内嵌 Client，Server 以 stdio 子进程或 HTTP 暴露能力",
+        "Host 内嵌 Client，Server 以 stdio 子进程或 Streamable HTTP 暴露能力",
         "三种原语：tools（可调用）/ resources（可读）/ prompts（模板）"
       ]
     },
     {
       "dot": "rose",
-      "title": "Pi 的现状【源码 + 文档】",
+      "title": "Pi 0.99 的接法【源码】",
       "items": [
-        "packages/*/src 中零 MCP 实现（全库 grep 证据）",
-        "learn-pi 刻意省略：要 MCP，扩展层实现即可",
-        "本图的 Bridge 是设计蓝图【推断】——Pi 当前没有这个扩展"
+        "src/extensions/index.ts：mcp 是 builtin + replaceable 的内置扩展",
+        "默认 exposure: codemode —— 工具不声明给模型，脚本用 searchTools() 找",
+        "客户端独立成包 packages/mcp，第三方扩展可整个顶替内置实现"
       ]
     },
     {
       "dot": "emerald",
-      "title": "何时该进 Core",
+      "title": "归属层级与上下文预算",
       "items": [
-        "生态需求密度：用户天天要接 N 个 server？",
-        "信任模型：进程审批/沙箱策略能否标准化？",
-        "维护预算：协议演化（spec 变更）谁长期背？"
+        "四档归属：Core 工具 / 内置扩展 / 用户扩展与包 / 外部进程",
+        "接入 ≠ 声明：接了协议也可以一条工具描述都不加",
+        "判断顺序：生态密度 → 信任模型 → 上下文预算 → 归属层级"
       ]
     }
   ]

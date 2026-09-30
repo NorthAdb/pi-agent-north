@@ -26,10 +26,14 @@ Pi（本仓库的产品入口是 `@earendil-works/pi-coding-agent`，CLI 名通�
 | `pi-agent-core` | Agent 运行时（工具调用、状态、事件） |
 | `pi-tui` | 终端 UI（差分渲染） |
 | `pi-coding-agent` | 面向开发者的编码 Agent CLI / SDK |
-| `pi-storage-sqlite-node` | 可选 SQLite 会话后端 |
+| `pi-codemode` | QuickJS 沙箱里跑 JS，唯一能力是调用被注入的工具 |
+| `pi-mcp` | 独立 MCP 客户端（stdio / Streamable HTTP / OAuth） |
+| `pi-session-backend-sqlite-node` | 可选 SQLite 会话后端（`packages/session-backends/sqlite-node`） |
 | `pi-server` | 实验性服务封装 |
 
-你当前工作区 `E:\AI-Tech\pi-agent` 是 fork（如 NorthAdb/pi-agent-north），学习内容与上游一致。
+各包 0.99.1 lockstep 同版本；完整依赖图与构建顺序见 [包地图与依赖.md](../02-架构/包地图与依赖.md)。
+
+你当前工作区 `E:\pi_north` 是 fork（`NorthAdb/pi-agent-north`），内容对应上游 0.99.1（已 merge 上游 `main`）。
 
 ## 「Harness」是什么意思
 
@@ -77,13 +81,16 @@ pi-ai（多厂商 stream / tools / 模型目录）
 
 ## Pi 默认不给你什么（刻意）
 
-MCP、子 Agent、权限弹窗、Plan Mode、内置 TODO、后台 bash……详见 [刻意省略.md](../01-设计哲学/刻意省略.md)。
+子 Agent、权限弹窗、Plan Mode、内置 TODO、后台 bash……详见 [刻意省略.md](../01-设计哲学/刻意省略.md)。
 
 这些不是「做不出来」，而是**不该钉死在内核里**——用扩展或包按你的安全与流程重做。
+
+MCP 是这条原则的边界样本：0.99.0 起它以内置扩展形式随 Pi 发布（Core 工具集没有变化），
+且默认 `exposure: "codemode"`——工具不声明给模型，只对脚本可调用。
 
 ## 相关链接
 
 - 产品站：[pi.dev](https://pi.dev)
 - 官方文档索引：`packages/coding-agent/docs/index.md`
 - 设计哲学长文（作者博客，README 引用）：[pi coding agent](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)
-- MCP 立场：[What if you don't need MCP?](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/)
+- MCP 上下文预算的经典论证：[What if you don't need MCP?](https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/)——0.99 的内置 MCP + codemode 正是这条批评的工程回答

@@ -24,7 +24,7 @@
 
 ## 四类状态（文档概念）
 
-摘自 / 转述 `agent-harness.md`：
+摘自 / 转述 `packages/agent/docs/harness.md`：
 
 1. **Harness config**（最新配置）：model、tools、resources、system prompt…  
    - getter 返回最新配置  
@@ -51,11 +51,11 @@ type AgentHarnessPhase = "idle" | "turn" | "compaction" | "branch_summary" | "re
 - **Hooks**：参与语义（可 block tool、变换上下文）  
 - **OpenTelemetry 等**：旁路遥测，不与 hooks 混用职责  
 
-详见 `packages/agent/docs/hooks.md`、`observability.md`。
+详见 `packages/agent/src/harness/hooks.ts` 与 `packages/agent/src/harness/telemetry.ts`（`packages/agent/docs/` 下**没有**独立的 hooks / observability 文档页）。
 
 ## Durable / 半持久
 
-`durable-harness.md` 方向：会话可恢复，但 **工具与扩展由宿主在恢复时重新提供**（不把整个 JS 世界序列化）。  
+`packages/agent/docs/assistant-durability.md`、`tool-durability.md` 方向：会话可恢复，但 **工具与扩展由宿主在恢复时重新提供**（不把整个 JS 世界序列化）。  
 
 这对二次开发的含义：
 
@@ -71,8 +71,9 @@ type AgentHarnessPhase = "idle" | "turn" | "compaction" | "branch_summary" | "re
 
 ## 相关路径
 
-- `packages/agent/docs/agent-harness.md`  
-- `packages/agent/docs/harness.md`  
-- `packages/agent/docs/durable-harness.md`  
-- `packages/agent/docs/hooks.md`  
-- `packages/agent/src/harness/`（实现演进中）
+- `packages/agent/docs/harness.md`（AgentHarness 总设计，体量极大）  
+- `packages/agent/docs/assistant-durability.md`、`packages/agent/docs/tool-durability.md`  
+- `packages/agent/docs/values.md`、`packages/agent/docs/runtime-simplification.md`  
+- `packages/agent/src/harness/`（实现：`agent-harness.ts` / `hooks.ts` / `events.ts` / `session/` …）
+
+> 本页早期版本引用过 `agent-harness.md`、`durable-harness.md`、`hooks.md`、`observability.md`——这四个文件在本仓库不存在，已改正。

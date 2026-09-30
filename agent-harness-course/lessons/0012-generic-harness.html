@@ -25,7 +25,7 @@
   <h2>二、如何从图上读懂（按三个证据层级分箱）</h2>
   <p><strong>第一箱：所有 Harness 都需要【推断＋业界共识】。</strong>Agent Loop（没有循环就没有多步）；Context Management（模型失忆，必须有人喂）；Tool Runtime（注册/校验/执行）；State/Session（可恢复性）；Interfaces（交互/自动化/嵌入三形态）；Observability（图上未画——Pi 的 AgentEvent 事件流就是它的雏形【源码】，完整的 trace 方案各家仍在演化）。</p>
   <p><strong>第二箱：Coding Agent 特有【推断】。</strong>文件读写/Shell 执行的工具组与"工作区"概念；项目指令发现（AGENTS.md 一类）；以仓库/目录为中心组织会话。这些放到"客服 Agent"上就不成立——领域决定了工具集。</p>
-  <p><strong>第三箱：Pi 自己的设计选择【源码】。</strong>同样必备的部件，Pi 做了有个性取舍：① JSONL append-only 会话树 + leafId 分支（别的产品多用 SQLite 或云存储）；② 刻意无内置 MCP 客户端、无子代理编排、无内置权限系统（截至当前源码；docs/security.md 明示）；③ 扩展面极厚（40+ 钩子）而 Core 极薄；④ TUI 为自研差分渲染框架（pi-tui 零业务依赖）。<b>共性是必需品，个性是竞争力</b>——审阅任何新 Agent 时先分这两箱，就不会被宣传页牵着走。</p>
+  <p><strong>第三箱：Pi 自己的设计选择【源码】。</strong>同样必备的部件，Pi 做了有个性取舍：① JSONL append-only 会话树 + leafId 分支（别的产品多用 SQLite 或云存储）；② 无子代理编排、无内置权限系统（docs/security.md 明示）；MCP 自 0.99 起以<b>可替换的内置扩展</b>接入，Core 工具集不变（第 15 课）；③ 扩展面极厚（40+ 钩子）而 Core 极薄；④ TUI 为自研差分渲染框架（pi-tui 零业务依赖）。<b>共性是必需品，个性是竞争力</b>——审阅任何新 Agent 时先分这两箱，就不会被宣传页牵着走。</p>
 
   <h2>三、本课七问（针对"抽象方法"本身）</h2>
   <ol class="seven">
@@ -44,7 +44,7 @@
     <tr><td>Agent Loop / Context / Tool Runtime / Session / Interfaces</td><td>通用必需</td><td><span class="badge generic">通用概念</span></td></tr>
     <tr><td>Compaction</td><td>通用必需（长任务）</td><td><span class="badge generic">通用概念</span> + <span class="badge src">源码</span>实现</td></tr>
     <tr><td>FS/Shell 工具组、AGENTS.md、仓库中心会话</td><td>Coding Agent 特有</td><td><span class="badge generic">通用概念</span>（领域层）</td></tr>
-    <tr><td>JSONL 树 + leafId、无 MCP/子代理/权限、厚扩展薄 Core、自研 TUI</td><td>Pi 的设计选择</td><td><span class="badge src">源码</span></td></tr>
+    <tr><td>JSONL 树 + leafId、MCP 走内置扩展、无子代理/权限、厚扩展薄 Core、自研 TUI</td><td>Pi 的设计选择</td><td><span class="badge src">源码</span></td></tr>
   </table>
 
   <h2>五、这张图在整个体系中的位置</h2>

@@ -38,7 +38,7 @@ const INITIAL_SCHEMA: readonly string[] = [
 		id INTEGER PRIMARY KEY,
 		conversation_id INTEGER NOT NULL,
 		kind TEXT NOT NULL,
-		status TEXT NOT NULL CHECK (status IN ('pending', 'running', 'terminal')),
+		status TEXT NOT NULL CHECK (status IN ('pending', 'running', 'waiting', 'completing', 'terminal')),
 		abort_requested INTEGER NOT NULL CHECK (abort_requested IN (0, 1)),
 		background INTEGER NOT NULL CHECK (background IN (0, 1)),
 		record TEXT NOT NULL CHECK (json_valid(record))
@@ -52,9 +52,12 @@ const INITIAL_SCHEMA: readonly string[] = [
 		id INTEGER PRIMARY KEY,
 		conversation_id INTEGER NOT NULL,
 		request_id TEXT,
+		status TEXT NOT NULL CHECK (status IN ('queued', 'placed', 'done', 'unanswered')),
 		record TEXT NOT NULL CHECK (json_valid(record))
 	) STRICT`,
 	"CREATE INDEX submissions_by_request ON submissions (conversation_id, request_id)",
+	"CREATE INDEX submissions_by_conversation ON submissions (conversation_id, id)",
+	"CREATE INDEX submissions_by_status ON submissions (status, id)",
 	`CREATE TABLE documents (
 		id INTEGER PRIMARY KEY,
 		kind TEXT NOT NULL,

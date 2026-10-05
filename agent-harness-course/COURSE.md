@@ -64,7 +64,7 @@
 
 ## 证据基准
 
-所有 Pi 侧结论基于 checkout。第 01–14 课的行号审计基准是 `47c9be752f88c26f4ffa06caf0d2a3888117d9b1`（上游 0.87.x）；
-第 15 课已按当前 checkout `9d7c377e69db1ffe18214ad462243224b4647402`（上游 0.99.1，新增 codemode / MCP）重写并复核。
-合并上游大版本后，被改动机制对应的课需要按新 checkout 重新审计行号。
+所有 Pi 侧结论基于当前 checkout，上游 **1.0.2**（2026-10-04）。
+1.0.0 把实验性 AgentHarness 从 `packages/agent` 删除；产品会话仍是 coding-agent 的 JSONL 树，实验持久化在 `packages/durable`。
+合并上游大版本后，被改动机制对应的课需要重新审计行号。
 第 13 课比较 Claude Code / Codex / OpenCode 时只有公开文档级证据，会明确降级标注。

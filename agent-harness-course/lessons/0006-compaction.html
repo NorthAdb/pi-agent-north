@@ -23,7 +23,7 @@
   </figure>
 
   <h2>二、如何从图上读懂 Pi</h2>
-  <p><span class="badge src">源码</span><strong>触发：留出回复余量。</strong><code>compaction.ts:289</code> <code>shouldCompact: contextTokens &gt; contextWindow − reserveTokens</code>，默认 <code>reserveTokens: 16384, keepRecentTokens: 20000</code>（:148-152）。reserve 给模型回复留空间，keep 决定"最近多少内容原样保留"。</p>
+  <p><span class="badge src">源码</span><strong>触发：留出回复余量。</strong><code>packages/coding-agent/src/core/compaction/compaction.ts:267</code> 的 <code>shouldCompact</code>：<code>contextTokens &gt; contextWindow − reserveTokens</code>。默认 <code>reserveTokens: 16384</code>、<code>keepRecentTokens: 20000</code>（<code>:126-130</code>）。reserve 给模型回复留空间，keep 决定"最近多少内容原样保留"。1.0 起这段代码只住在产品包里，<code>packages/agent</code> 不再有压缩库。</p>
   <p><span class="badge src">源码</span><strong>切点：绝不切在 toolResult 上。</strong><code>findCutPoint</code>（:468-523）从最新往回累计估算 token，到 keepRecentTokens 预算处取最近的合法切点；<code>isCutPointMessage</code>（:373）规定 toolResult <b>永远不是</b>合法切点——否则会把 toolCall 和 toolResult 拆散，请求直接被 API 拒绝。这就是"不能简单删最老消息"的第一层原因。</p>
   <p><span class="badge src">源码</span><strong>摘要：结构化模板 + 迭代更新。</strong><code>SUMMARIZATION_PROMPT</code>（:529）强制输出 <code>## Goal / ## Constraints &amp; Preferences / ## Progress（Done/In Progress/Blocked） / ## Key Decisions / ## Next Steps / ## Critical Context</code>；已有旧摘要时走 <code>UPDATE_SUMMARIZATION_PROMPT</code>（:562）做<b>增量迭代摘要</b>——这正是"分支摘要/迭代摘要"的落点。产物持久化为 <code>CompactionEntry { summary, firstKeptEntryId, tokensBefore, … }</code>（session-manager.ts:91），投影重建时用摘要替换 firstKeptEntryId 之前的所有条目。</p>
   <p><strong>为什么这是 State Compression？</strong>因为被压缩的不是"存储"（JSONL 原文永远在），而是"模型可见的工作集"——和操作系统的页压缩/快照同构：<b>持久状态 → 压缩表示 → 模型可见上下文</b>。保留所有历史 ≠ 把所有历史送进模型。</p>

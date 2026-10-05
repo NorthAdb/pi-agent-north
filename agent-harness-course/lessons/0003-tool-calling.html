@@ -23,8 +23,8 @@
   </figure>
 
   <h2>二、如何从图上读懂 Pi</h2>
-  <p><span class="badge src">源码</span><strong>声明侧（进模型）：</strong>每个工具在 <code>packages/ai/src/types.ts:680</code> 定义为 <code>{ name, description, parameters(TypeBox JSON Schema) }</code>——注意这个接口<b>没有 execute</b>。这三样会随每次请求发给模型（"本店菜单"）。<code>description</code> 写得好坏直接决定模型会不会正确用这个工具——它是纯粹写给模型看的广告词。</p>
-  <p><span class="badge src">源码</span><strong>调用侧（出模型）：</strong>模型输出 <code>{ type: "toolCall", id, name, arguments }</code>（types.ts:410）。Runtime 先用 TypeBox 做 <code>validateToolArguments</code>（<code>packages/ai/src/utils/validation.ts:317</code>），再经扩展的 <code>tool_call</code> 钩子（可 block），然后才调用 <code>tool.execute()</code>。<span class="badge src">源码</span>execute 是 agent 包加的：<code>AgentTool extends Tool</code>（agent/types.ts:443），真正干活的函数由产品层注入（<code>coding-agent/src/core/tools/tool-definition-wrapper.ts:5</code>）。</p>
+  <p><span class="badge src">源码</span><strong>声明侧（进模型）：</strong>每个工具在 <code>packages/ai/src/types.ts:717</code> 定义为 <code>{ name, description, parameters(TypeBox JSON Schema) }</code>——注意这个接口<b>没有 execute</b>。这三样会随每次请求发给模型（"本店菜单"）。<code>description</code> 写得好坏直接决定模型会不会正确用这个工具——它是纯粹写给模型看的广告词。</p>
+  <p><span class="badge src">源码</span><strong>调用侧（出模型）：</strong>模型输出 <code>{ type: "toolCall", id, name, arguments }</code>（<code>types.ts:419</code>）。Runtime 先用 TypeBox 做 <code>validateToolArguments</code>（<code>packages/ai/src/utils/validation.ts:317</code>），再经扩展的 <code>tool_call</code> 钩子（可 block），然后才调用 <code>tool.execute()</code>。<span class="badge src">源码</span>execute 是 agent 包加的：<code>AgentTool extends Tool</code>（<code>agent/src/types.ts:464</code>，<code>execute</code> 在 <code>:481</code>），真正干活的函数由产品层注入（<code>coding-agent/src/core/tools/tool-definition-wrapper.ts</code>）。</p>
   <p><span class="badge src">源码</span><strong>结果侧（回模型）：</strong>执行产出 <code>AgentToolResult { content, details }</code>，被包成 <code>role:"toolResult"</code> 消息 push 回 Context——<b>工具因此是上下文的一部分</b>：schema 进请求参数，结果进消息历史。输出超限有统一截断（2000 行 / 50KB，<code>tools/truncate.ts:11</code>），截断时附带"如何继续读"的提示。OS 全程只见 Executor，见不到模型。</p>
 
   <h2>三、新概念的七问：Tool Schema / ToolCall / ToolResult</h2>
@@ -35,7 +35,7 @@
     <li><b>输出是什么？</b>结构化 AgentToolResult（文本/图片 content），错误时 isError=true。</li>
     <li><b>由谁控制？</b>声明与校验由 Runtime 控制；toolCall 的"意愿"由模型产生；副作用由 OS 发生。</li>
     <li><b>和前一概念的关系？</b>toolCall 是 Agent Loop 每轮循环的"分流信号"——本课解释这个信号长什么样、怎么被兑现。</li>
-    <li><b>Pi 在源码哪里实现？</b><span class="badge src">源码</span><code>packages/ai/src/types.ts</code>（Tool/ToolCall）、<code>packages/agent/src/types.ts:443</code>（AgentTool.execute）、<code>packages/coding-agent/src/core/tools/*</code>（8 个内置工具实现）。</li>
+    <li><b>Pi 在源码哪里实现？</b><span class="badge src">源码</span><code>packages/ai/src/types.ts:717</code>（Tool）、<code>:419</code>（ToolCall）、<code>packages/agent/src/types.ts:464</code>（AgentTool.execute）。产品注册表有 8 个工具（<code>tools/index.ts:95</code>），默认只启用 read / bash / edit / write（<code>settings-manager.ts:215</code>）。powershell、grep、find、ls 在注册表里，不在默认集合里。</li>
   </ol>
 
   <h2>四、源码映射</h2>

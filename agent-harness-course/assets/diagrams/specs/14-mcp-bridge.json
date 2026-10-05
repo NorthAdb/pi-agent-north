@@ -2,17 +2,18 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Diagram 14 · MCP 与 Pi：内置扩展接入路径（0.99）",
+    "title": "Diagram 14 · MCP 与 Pi：可替换内置扩展",
     "locale": "zh-CN",
     "quality_profile": "showcase",
+    "output": "agent-harness-course/lessons/diagrams/14-mcp-bridge.html",
     "viewBox": [
       1160,
       490
     ],
     "repository": {
-      "url": "https://github.com/NorthAdb/pi-agent-north",
+      "url": "https://github.com/NorthAdb/pi-agent-north.git",
       "provider": "github",
-      "revision": "9d7c377e69db1ffe18214ad462243224b4647402"
+      "revision": "49987be9a71f2c36d56076ee584b302c68f1d280"
     }
   },
   "components": [
@@ -61,7 +62,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/extensions/types.ts",
-          "line": 1839
+          "line": 1853
         }
       ]
     },
@@ -266,7 +267,7 @@
     },
     {
       "dot": "rose",
-      "title": "Pi 0.99 的接法【源码】",
+      "title": "Pi 的接法【源码】",
       "items": [
         "src/extensions/index.ts：mcp 是 builtin + replaceable 的内置扩展",
         "默认 exposure: codemode —— 工具不声明给模型，脚本用 searchTools() 找",

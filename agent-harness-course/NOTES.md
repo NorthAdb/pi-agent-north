@@ -13,10 +13,9 @@
 
 ## 工作笔记
 
-- 仓库结构（已核实，0.99.1）：packages/{chord, telemetry, tui, ai, durable, agent, protocol, client, server, codemode, mcp, session-backends, coding-agent, evals}。
-- 2026-09 同步上游 0.99.1（merge `9d7c377e`）：新增 `codemode` / `mcp` 两个包，MCP 成为可替换的内置扩展。
-  第 15 课据此重写；Diagram 14 的 spec 与渲染 HTML 文案同步更新，并用 headless Chrome 重拍了 4 张视口截图
-  （Archify 不在本机，渲染件是文本级替换，下次可用 Archify 重新渲染覆盖）。
+- 仓库结构（已核实，1.0.2，2026-10-04）：packages/{chord, telemetry, tui, ai, durable, agent, protocol, client, server, codemode, mcp, coding-agent, evals}。没有 `session-backends`。
+- 1.0.0 起 `@earendil-works/pi-agent-core` 只保留 `Agent`、循环、proxy 与类型。旧的 `packages/agent/src/harness` 与 `packages/agent/docs/` 已删除。日常 `pi` 的会话树和压缩仍在 `packages/coding-agent`。实验性持久化运行时是 `@earendil-works/pi-durable`（SQLite / JSONL 存储在该包内）。
+- 2026-10 按 1.0.2 复核两套中文材料：行号、包边界、MCP 默认暴露与内置扩展清单。Diagram 08 / 12 / 14 的可见文案已改；画布布局未重排（Archify 不在本机）。
 - fork 内已有 learn-pi/ 中文概览导读（22 篇），本课程不与其重复：learn-pi 是"是什么/怎么用"，本课程是"为什么这样设计 + 源码逆向"。
 - Archify 图表嵌入 lessons/*.html；每个 lesson 一个主题一个图。
 - 证据标注约定：【源码】【文档】【推断】。

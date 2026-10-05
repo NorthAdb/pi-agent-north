@@ -26,7 +26,7 @@
   <p><span class="badge src">源码</span>图上有三个颜色/边界层次，对应 Pi 仓库的真实分层：</p>
   <p><strong>外层是外部系统</strong>：你和你的操作系统（Shell、文件系统）。Harness 能通过"工具执行"触碰 OS，但 OS 本身不归它管。</p>
   <p><strong>中间是产品层 Harness（pi-coding-agent）</strong>：TUI 交互界面、AgentSessionRuntime（会话宿主）、AgentSession（产品状态机）、Tool Registry（read/bash/edit/write 等工具）、Session JSONL（磁盘上的历史）、以及 Compaction·Skills·Extensions 这组服务。你日常看到的"Pi"几乎全部是这一层。</p>
-  <p><strong>内层是 Core Runtime（pi-agent-core + pi-ai）</strong>：<code>agentLoop()</code> 双层 while 循环、Context 数据结构、以及 Model Provider 抽象（约 40 家模型厂商，统一成一个 <code>streamSimple</code> 流式接口）。<span class="badge src">源码</span>关键证据：这一层完全不知道"编码"的存在——<code>packages/agent</code> 里没有任何一个字提到 read/bash/edit，这些是产品层注入进去的。</p>
+  <p><strong>内层是 Core Runtime（pi-agent-core + pi-ai）</strong>：<code>agentLoop()</code> 双层 while 循环、Context 数据结构、以及 Model Provider 抽象（多家模型厂商，统一成一个 <code>streamSimple</code> 流式接口）。<span class="badge src">源码</span>1.0 起 <code>packages/agent</code> 只剩循环、Agent 和 proxy，不再包含会话或压缩。关键证据：这一层完全不知道"编码"的存在——包里没有 read/bash/edit，这些是产品层注入进去的。另一条实验线 <code>packages/durable</code> 做可恢复的 Harness，日常 <code>pi</code> 不走它。</p>
   <p><strong>为什么 LLM 本身不是 Agent？</strong>因为图上粉色卡片说的三件事：LLM 只做一件事——收一份 Context，吐一段 token，请求结束即"失忆"。它不能执行工具（只能<b>建议</b>调用哪个工具）、不能持久化任何东西、看不到文件系统。图上所有"持久的、会做决定的、能动手的"部件，全部住在 Harness 侧。<strong>Agent = LLM + 一整套让它稳定持续安全干活的工程</strong>，这套工程就叫 Harness（线束/马具——套在 LLM 这匹"马"上的那套装备）。</p>
 
   <h2>三、新概念的七问：Harness</h2>
@@ -37,17 +37,17 @@
     <li><b>输出是什么？</b>对真实世界的副作用（改了哪些文件、跑了什么命令）+ 给用户的答复。</li>
     <li><b>它由谁控制？</b>循环和状态由 Harness 代码控制；模型只在每一步被咨询一次意见。</li>
     <li><b>它和前一个概念的关系？</b>这是课程第一个概念——它是后面一切机制（Loop、工具、会话、压缩……）的容器。</li>
-    <li><b>Pi 在源码哪里实现？</b><span class="badge src">源码</span>三层各自成包：<code>packages/ai</code>（模型 IO）、<code>packages/agent</code>（循环）、<code>packages/coding-agent</code>（产品组装）。</li>
+    <li><b>Pi 在源码哪里实现？</b><span class="badge src">源码</span>三层各自成包：<code>packages/ai</code>（模型 IO）、<code>packages/agent</code>（循环）、<code>packages/coding-agent</code>（产品组装）。实验性可恢复 Harness 在 <code>packages/durable</code>，与日常 CLI 分开。</li>
   </ol>
 
   <h2>四、源码映射</h2>
   <table class="map">
     <tr><th>组件</th><th>源码位置</th><th>职责</th></tr>
-    <tr><td>agentLoop()</td><td><code>packages/agent/src/agent-loop.ts:162</code></td><td>核心循环（第 2 课的主角）</td></tr>
-    <tr><td>Context 类型</td><td><code>packages/ai/src/types.ts:697</code></td><td><code>{ systemPrompt, messages, tools }</code>——模型的全部输入</td></tr>
-    <tr><td>Model Provider</td><td><code>packages/ai/src/models.ts:889</code></td><td>统一 40 家 provider 的流式入口</td></tr>
-    <tr><td>AgentSession</td><td><code>packages/coding-agent/src/core/agent-session.ts</code></td><td>产品层状态机：工具启停、压缩、扩展</td></tr>
-    <tr><td>Tool Registry</td><td><code>packages/coding-agent/src/core/tools/index.ts:95</code></td><td>内置 8 工具：read/bash/powershell/edit/write/grep/find/ls</td></tr>
+    <tr><td>agentLoop() / runLoop</td><td><code>packages/agent/src/agent-loop.ts:38</code> / <code>:163</code></td><td>公开入口与私有双层 while（第 2 课的主角）</td></tr>
+    <tr><td>Context 类型</td><td><code>packages/ai/src/types.ts:734</code></td><td><code>{ systemPrompt?, messages, tools? }</code>——送出前还会被 normalizeContext 折进转录</td></tr>
+    <tr><td>Model Provider</td><td><code>packages/ai/src/models.ts:895</code></td><td><code>Models.streamSimple</code>，统一各 provider 的流式入口</td></tr>
+    <tr><td>AgentSession</td><td><code>packages/coding-agent/src/core/agent-session.ts:362</code></td><td>产品层状态机：工具启停、压缩、扩展</td></tr>
+    <tr><td>Tool Registry</td><td><code>packages/coding-agent/src/core/tools/index.ts:95</code></td><td>注册表 8 个：read/bash/powershell/edit/write/grep/find/ls。默认启用 4 个：read/bash/edit/write（<code>settings-manager.ts:215</code>）</td></tr>
     <tr><td>Session JSONL</td><td><code>packages/coding-agent/src/core/session-manager.ts:1080</code></td><td>append-only 会话文件</td></tr>
   </table>
 

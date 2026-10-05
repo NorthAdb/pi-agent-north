@@ -26,7 +26,7 @@ src/cli.ts
 
 ## 默认工具
 
-内置：`read`、`write`、`edit`、`bash`（另有可选 `grep` / `find` / `ls`）。
+默认启用：`read`、`bash`、`edit`、`write`（`settings-manager.ts` 的 `DEFAULT_TOOL_NAMES`）。注册表另外还有 `powershell`、`grep`、`find`、`ls`，不在默认集合里。`codemode` 和 `tool_search` 是内置扩展工具，默认不激活。
 
 CLI 可用 `--tools` / `--exclude-tools` / `--no-builtin-tools` 等裁剪。
 

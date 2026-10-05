@@ -34,7 +34,7 @@
     <tr><td>Capability / Authorization / Sandbox</td><td>能力（有什么工具）/ 授权（动手前谁说了算）/ 沙箱（物理上碰得到什么）</td><td><a href="../lessons/0009-capability-boundary.html">第 9 课</a></td></tr>
     <tr><td>Project Trust</td><td>Pi 唯一 Core 级安全机制：门禁项目 .pi/* 资源加载，防供应链</td><td>第 9 课 · <code>trust-manager.ts</code></td></tr>
     <tr><td>AppMode</td><td>Pi 的四种运行形态：interactive / print / json / rpc</td><td><a href="../lessons/0010-interfaces.html">第 10 课</a> · <code>main.ts:111</code></td></tr>
-    <tr><td>AgentEvent</td><td>10 种生命周期事件（agent_start/end、message_*、tool_execution_*）</td><td>第 10 课 · <code>agent/types.ts:485</code></td></tr>
+    <tr><td>AgentEvent</td><td>10 种生命周期事件（agent_start/end、turn_*、message_*、tool_execution_*）</td><td>第 2 / 10 课 · <code>agent/src/types.ts:514</code></td></tr>
     <tr><td>steering / followUp</td><td>中途插话 / 排队后续消息——Loop 外层 while 的两个驱动源</td><td>第 2 课 · <code>agent.ts</code></td></tr>
     <tr><td>Mental Model 五层</td><td>Model → Agent Loop → Runtime → Harness → Environment</td><td><a href="../lessons/0014-mental-model.html">第 14 课</a></td></tr>
     <tr><td>Sections（提示词分块）</td><td>Pi 把系统提示词拆成 preamble/tools/rules/docs/project_context/skills/cwd 等独立段，diff 后只发变更</td><td>第 4 课 · <code>system-prompt.ts:121/204</code></td></tr>

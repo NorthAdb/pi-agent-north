@@ -1,79 +1,48 @@
-# Harness 北星（AgentHarness）
+# 两条 Harness，不要混成一条
 
-## 先分清「今天的代码」和「文档中的北星」
+1.0.0 删掉了 `packages/agent` 里的 `AgentHarness`、会话仓库和压缩库。`packages/agent/docs/` 也不在了。现在要先分清你打开的是哪条路径。
 
-| 层面 | 现状（简化） |
-|------|----------------|
-| Coding-agent 日常路径 | 大量使用 `Agent` + `AgentSession` + JSONL 会话文件 |
-| `packages/agent/docs/harness.md` 等 | 描述 **AgentHarness** 的持久化、相位、钩子、可重入等目标设计 |
+| 路径 | 你实际跑到的代码 | 什么时候读 |
+|------|------------------|------------|
+| 日常 `pi` | `Agent` + `AgentSession` + JSONL `SessionManager` | 使用、扩展、读 coding-agent |
+| 实验持久化 | `@earendil-works/pi-durable` 的 `Harness` | 要做崩溃可恢复、提交先于展示的运行时 |
 
-学习时不要把设计文档的每一句都当成「当前每一行代码已完全如此」。  
-把它当作：**官方认为正确的长期架构方向**。二次开发深水区以此为指南针。
+两条都叫 harness，解决的问题不一样。低层循环只负责「这一轮怎么叫模型和工具」。产品还要决定历史放哪、压缩切在哪、扩展什么时候加载。
 
-## Harness 要解决什么
+## 日常路径：会话文件是产品的真相
 
-低层 loop 已经能跑工具循环；产品还需要：
+`packages/coding-agent/src/core/session-manager.ts` 把一次会话写成 append-only JSONL。条目不止消息，还有模型切换、压缩、分支摘要。当前叶子是 `leafId`，从叶子走到根才是模型这一轮该看见的历史。
 
-- 会话持久化与恢复  
-- 资源（skills/templates）与系统提示解析  
-- 运行中改配置 vs 当前 turn 快照不互相踩脚  
-- 忙碌相位（turn / compaction / retry）下哪些 API 可调用  
-- 钩子失败、pending writes、save points 的确定性  
+压缩在 `packages/coding-agent/src/core/compaction/compaction.ts`，不在 agent 包里。它替换的是送给模型的投影，不删 JSONL 原文。
 
-`AgentHarness` 文档把这些收成显式模型。
+扩展、技能、工具、信任门禁都在 coding-agent。`packages/agent` 只提供循环和事件。
 
-## 四类状态（文档概念）
+## 实验路径：pi-durable
 
-摘自 / 转述 `packages/agent/docs/harness.md`：
+`packages/durable/README.md` 开头就写了：**Experimental. The API changes without notice.**
 
-1. **Harness config**（最新配置）：model、tools、resources、system prompt…  
-   - getter 返回最新配置  
-   - setter 立即更新，但**影响下一 turn**，不改写飞行中的 provider 请求  
+它解决的是另一件事：对话、模型回合、工具调用先提交到存储，进程死在半路，重新打开还能从上次的检查点继续。存储可以是内存、JSONL 或 SQLite（`src/storage/sqlite/node.ts`）。1.0 之前单独的 `packages/session-backends` 没有了，SQLite 收进这个包。
 
-2. **Turn snapshot**：一次 LLM turn 冻结的输入视图（消息、工具、prompt、stream options…）  
+概念上它和日常 CLI 不是同一套对象：
 
-3. **Session**：已持久化条目；读不包括尚未 flush 的队列  
+- **Harness**：一份打开的存储，加上在上面跑 agent 的机器
+- **Conversation**：不可变条目组成的转录
+- **Commit**：一次原子写入。条目、文档、任务要么一起落下，要么都不落
+- **Task**：每一步存检查点。生成模型回复的是内置任务 `pi.generation`，它再拥有工具任务
 
-4. **Pending session writes**：忙碌时排队的写入，在 save point / 结束时确定性落盘  
+规范在 `packages/durable/docs/spec.md`（Pico5）。coding-agent 里引用它的代码在 `src/experimental/`，不是 `pi` 默认打开会话的那条路。`packages/coding-agent/package.json` 的 dependencies 里没有 `pi-durable`。
 
-## 相位
+## 学习者怎么用
 
-```ts
-type AgentHarnessPhase = "idle" | "turn" | "compaction" | "branch_summary" | "retry";
-```
-
-结构操作（如 `prompt`、`compact`、树导航）要求 idle；turn 中允许 steer/followUp/abort 等。  
-忙碌时再 `prompt` → `busy` 错误。这是并发心智的核心。
-
-## 事件 vs 钩子 vs 可观测性
-
-- **Events**：已提交状态的观察  
-- **Hooks**：参与语义（可 block tool、变换上下文）  
-- **OpenTelemetry 等**：旁路遥测，不与 hooks 混用职责  
-
-详见 `packages/agent/src/harness/hooks.ts` 与 `packages/agent/src/harness/telemetry.ts`（`packages/agent/docs/` 下**没有**独立的 hooks / observability 文档页）。
-
-## Durable / 半持久
-
-`packages/agent/docs/assistant-durability.md`、`tool-durability.md` 方向：会话可恢复，但 **工具与扩展由宿主在恢复时重新提供**（不把整个 JS 世界序列化）。  
-
-这对二次开发的含义：
-
-- 你可以升级工具实现再打开旧会话  
-- 宿主必须在 resume 时装配好等价能力，否则行为会漂  
-
-## 学习者怎么用这些文档
-
-1. 先精通当前 `Agent` 事件循环  
-2. 再读 harness 文档的「状态分类」与「相位」两节  
-3. 在 coding-agent 里对照：哪些像 snapshot，哪些像 live config  
-4. 做扩展时避免在 hook 里乱调可能死锁的 settlement API（文档有警告）  
+1. 先把 `packages/agent/src/agent-loop.ts` 的双层 while、`prepareRequest`、`finishTurn` 读懂。
+2. 再读 `session-manager.ts` 和 `compaction.ts`，这是你用 `pi` 时真正落盘的模型。
+3. 只有要做「死了还能接着跑」的宿主时，再打开 `packages/durable/README.md`。不要把 spec 里的相位和对象名套回今天的 `AgentSession`。
 
 ## 相关路径
 
-- `packages/agent/docs/harness.md`（AgentHarness 总设计，体量极大）  
-- `packages/agent/docs/assistant-durability.md`、`packages/agent/docs/tool-durability.md`  
-- `packages/agent/docs/values.md`、`packages/agent/docs/runtime-simplification.md`  
-- `packages/agent/src/harness/`（实现：`agent-harness.ts` / `hooks.ts` / `events.ts` / `session/` …）
-
-> 本页早期版本引用过 `agent-harness.md`、`durable-harness.md`、`hooks.md`、`observability.md`——这四个文件在本仓库不存在，已改正。
+- `packages/agent/README.md` — 循环、事件、`prepareRequest` / `finishTurn`
+- `packages/coding-agent/src/core/session-manager.ts`
+- `packages/coding-agent/src/core/compaction/compaction.ts`
+- `packages/durable/README.md`
+- `packages/durable/docs/spec.md`
+- `packages/coding-agent/src/experimental/durable/`

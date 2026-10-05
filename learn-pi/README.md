@@ -35,7 +35,7 @@
 | 5 二次开发 | [05-二次开发/Fork与换皮.md](05-二次开发/Fork与换皮.md) | `piConfig`、品牌与配置目录 |
 | 6 深读 | [06-深读路径/推荐阅读顺序.md](06-深读路径/推荐阅读顺序.md) | 文档 → 例子 → 源码 |
 | 6 深读 | [06-深读路径/关键文件清单.md](06-深读路径/关键文件清单.md) | 先打开哪 20 个文件 |
-| 6 深读 | [06-深读路径/Harness北星.md](06-深读路径/Harness北星.md) | AgentHarness 设计方向 |
+| 6 深读 | [06-深读路径/Harness北星.md](06-深读路径/Harness北星.md) | 日常 JSONL 会话，以及实验性 pi-durable |
 | 7 参考 | [07-参考/术语表.md](07-参考/术语表.md) | 名词对照 |
 | 7 参考 | [07-参考/官方文档地图.md](07-参考/官方文档地图.md) | 指向仓库内官方 docs |
 
@@ -43,7 +43,7 @@
 
 ## 一句话总结
 
-> **Pi = 极简编码 Agent 线束（harness）**：内核只做「多模型 LLM + Agent 循环 + 会话 + 四个工具 + 终端 UX」，其余工作流靠 **Extensions / Skills / Packages / SDK** 自己拼；**改工作流，不必改内核。**
+> **Pi = 极简编码 Agent 线束（harness）**：内核做「多模型 LLM + Agent 循环 + JSONL 会话 + 默认四个工具 + 终端 UX」。MCP 与 codemode 是可替换的内置扩展。其余工作流靠 **Extensions / Skills / Packages / SDK** 自己拼。**改工作流，不必改循环。**
 
 ---
 

@@ -28,10 +28,10 @@
   </ol>
 
   <h2>第 1 步 · 接口设计（对着 Pi 的真实契约抄形状）</h2>
-  <pre><code># 对应 Pi: packages/ai/src/types.ts:697
+  <pre><code># 对应 Pi: packages/ai/src/types.ts:734
 class Context:  system_prompt: str;  messages: list[Message];  tools: list[Tool]
 
-# 对应 Pi: types.ts:680（Tool 无 execute）+ agent/types.ts:443（AgentTool 加 execute）
+# 对应 Pi: types.ts:717（Tool 无 execute）+ agent/src/types.ts:464（AgentTool 加 execute）
 @dataclass
 class Tool:
     name: str; description: str; parameters: dict        # JSON Schema
@@ -41,7 +41,7 @@ class Tool:
 Message = UserMessage | AssistantMessage | ToolResultMessage
 ToolResultMessage = {role:"toolResult", tool_call_id, content, is_error}
 
-# 对应 Pi: agent-loop.ts:37 的入口
+# 对应 Pi: agent-loop.ts:38 的 agentLoop 入口
 def agent_loop(context, tools, stream_fn, hooks) -> list[Message]
 
 # 对应 Pi: StreamFn 契约——失败不抛异常，返回 stop_reason="error"
@@ -106,7 +106,7 @@ def stream_fn(model, context) -> AssistantMessage   # SSE 或整块均可</code>
   <h2>第 6 步 · 扩展方向（做完基础版再选做）</h2>
   <ul>
     <li><b>会话分支</b>：leaf 指针 + branch()/fork()——回看 <a href="../lessons/0005-session-tree.html">第 5 课</a> 再动手</li>
-    <li><b>流式输出</b>：SSE 增量渲染——Pi 的 AssistantMessageEvent（ai/types.ts:732）</li>
+    <li><b>流式输出</b>：增量渲染——Pi 的 AssistantMessageEvent（ai/src/types.ts:769）</li>
     <li><b>steering 队列</b>：用户中途插话——Pi 的外层 while 第二驱动源</li>
     <li><b>多 Provider 路由</b>：模型降级/切换——pi-ai 的 provider 抽象</li>
     <li><b>提示词 sections diff</b>：只发变更段，保 prompt cache</li>

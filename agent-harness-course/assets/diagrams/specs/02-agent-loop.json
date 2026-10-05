@@ -5,6 +5,7 @@
     "title": "Diagram 02 · Agent Loop：一次 prompt 如何驱动 LLM→Tool→Observation",
     "locale": "zh-CN",
     "quality_profile": "showcase",
+    "output": "agent-harness-course/lessons/diagrams/02-agent-loop.html",
     "viewBox": [
       1180,
       656
@@ -141,7 +142,7 @@
       "col": 4,
       "type": "backend",
       "label": "含 toolCall 块？",
-      "sublabel": "agent-loop.ts:258",
+      "sublabel": "agent-loop.ts:259",
       "width": 150
     },
     {

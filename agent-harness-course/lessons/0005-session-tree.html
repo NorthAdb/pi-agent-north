@@ -23,7 +23,7 @@
   </figure>
 
   <h2>二、如何从图上读懂 Pi</h2>
-  <p><span class="badge src">源码</span><strong>一切皆条目。</strong><code>packages/coding-agent/src/core/session-manager.ts:43-197</code> 定义了条目全集：不只是消息（message），还有 model_change、thinking_level_change、usage、compaction、branch_summary、custom、context_edit——配置的演变、压缩事件、扩展的私有状态都被持久化。每个条目带 <code>{ type, id, parentId, timestamp }</code>。</p>
+  <p><span class="badge src">源码</span><strong>一切皆条目。</strong><code>packages/coding-agent/src/core/session-manager.ts</code> 里，文件头是 <code>SessionHeader</code>（<code>:43</code>），树上的条目联合类型是 <code>SessionEntry</code>（<code>:183</code>）。不只是消息（message），还有 model_change、thinking_level_change、usage、compaction、branch_summary、custom、custom_message、context_edit、label、session_info。配置的演变、压缩事件、扩展的私有状态都被持久化。每个条目带 <code>{ type, id, parentId, timestamp }</code>（<code>SessionEntryBase</code>，<code>:57</code>）。</p>
   <p><span class="badge src">源码</span><strong>分支 = 移动指针。</strong>类注释（:977-985）写明 "append-only trees… The 'leaf' pointer tracks the current position. Branching moves the leaf to an earlier entry"。<code>branch(branchFromId)</code>（:1574）只是把 leafId 指回某个祖先——零拷贝；<code>branchWithSummary()</code> 额外落一条 branch_summary 摘要条目；<code>forkFrom()</code>（:1808）才真正把 root→leaf 路径抽成新文件（header 记 parentSession 血缘）。<code>--continue</code> 按 mtime 找最近文件（:1788）重放恢复 model 与 thinking level。</p>
   <p><span class="badge src">源码</span><strong>投影，不是回放全部。</strong><code>buildSessionProjection()</code> 从 leaf 沿 parentId 回溯到根，处理 compaction 与 context_edit 条目，产出喂给 Agent 的 messages——这就是第 4 课"Context 投影"的来源。</p>
 

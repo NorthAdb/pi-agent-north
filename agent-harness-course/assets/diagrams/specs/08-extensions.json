@@ -5,10 +5,11 @@
     "title": "Diagram 08 · Extensions / Hooks：Minimal Core + Extensible Harness",
     "locale": "zh-CN",
     "quality_profile": "showcase",
+    "output": "agent-harness-course/lessons/diagrams/08-extensions.html",
     "repository": {
-      "url": "https://github.com/NorthAdb/pi-agent-north",
+      "url": "https://github.com/NorthAdb/pi-agent-north.git",
       "provider": "github",
-      "revision": "47c9be752f88c26f4ffa06caf0d2a3888117d9b1"
+      "revision": "49987be9a71f2c36d56076ee584b302c68f1d280"
     },
     "viewBox": [
       1080,
@@ -47,7 +48,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/extensions/types.ts",
-          "line": 1762
+          "line": 2004
         }
       ]
     },
@@ -68,7 +69,7 @@
       "sources": [
         {
           "path": "packages/coding-agent/src/core/agent-session.ts",
-          "line": 1700
+          "line": 362
         }
       ]
     },
@@ -103,8 +104,8 @@
     {
       "id": "builtin",
       "type": "backend",
-      "label": "内置扩展 llama.cpp",
-      "sublabel": "registerProvider",
+      "label": "四个内置扩展",
+      "sublabel": "llama · mcp · codemode",
       "pos": [
         330,
         220

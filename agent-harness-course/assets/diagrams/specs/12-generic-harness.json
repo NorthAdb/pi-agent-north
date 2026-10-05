@@ -2,9 +2,10 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Diagram 12 · Generic Agent Harness（抽象模型，非 Pi 专属）",
+    "title": "Diagram 12 · 通用 Agent Harness",
     "locale": "zh-CN",
     "quality_profile": "showcase",
+    "output": "agent-harness-course/lessons/diagrams/12-generic-harness.html",
     "viewBox": [
       1030,
       530
@@ -255,7 +256,7 @@
       "dot": "emerald",
       "title": "哪些是 Pi 自己的选择",
       "items": [
-        "MCP 走可替换的内置扩展（0.99 起）；无子代理 / 无内置权限系统",
+        "MCP 是可替换内置扩展；无子代理 / 无内置权限系统",
         "JSONL 会话树 + leafId 分支是 Pi 的状态管理签名"
       ]
     }

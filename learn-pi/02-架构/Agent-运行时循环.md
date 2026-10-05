@@ -66,7 +66,9 @@ user ──► LLM（可能带 tool_calls）
 - 全局 `toolExecution`：`parallel` | `sequential`
 - 单工具可强制 `executionMode: "sequential"`
 - Steering / Follow-up 队列：运行中插入用户消息的不同时机
-- 工具结果可 `terminate`，跳过后续 LLM 调用
+- 工具结果可 `terminate`。整批结果都带这个标记时，才跳过后续 LLM 调用
+- `prepareRequest`：每一次 provider 请求之前，包括第一轮。用来装上已落盘的上下文，本身不读队列
+- `finishTurn`：助手消息和工具结果都定稿之后、`turn_end` 之前。返回 `{ action: "end" }` 结束这一轮运行；返回 `{ action: "continue" }` 保证再有一次请求。错误和中止仍然是硬退出。0.87 删掉的 `shouldStopAfterTurn` 迁到这里
 
 ## 为什么这样设计
 
